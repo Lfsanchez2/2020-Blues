@@ -1,8 +1,29 @@
 .banner{
+    position: fixed;
+    left: 0%;
+    top: 0%;
     color: white;
-    margin-bottom: 0.5vw;
-    width: 100%;
+    border-bottom: 1vw white double;
+    display: flex;
+    text-align: left;
+    width: 110%;
+    height: 3vw;
     background-color: #1e008a;
     font-size: 2vw;
-    padding: 0.5vw;
+    padding: 2vw;
+  }
+
+  .Title{
+      margin-top: 10vw;
+      margin-bottom: 1vw;
+      color: black;
+      font-size: 5.5vw;
+      text-align: center;
+  }
+
+  .desc{
+      margin: 2vw auto 2vw auto;
+      width: 75%;
+      padding: 2vw;
+      font-size: 2vw;
   }
