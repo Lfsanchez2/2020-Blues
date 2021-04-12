@@ -133,10 +133,12 @@ function makeDivergingChart(group, dataset){
 
     xScale2.domain(["2018-2019","2019-2020"])
     yScale2.domain([-30, 30])
-    group.selectAll("rect")
+    let bars = group.append("g")
+        .selectAll("g")
         .data(dataset)
         .enter()
-        .append("rect")
+
+    bars.append("rect")
         .attr("width", xScale2.bandwidth())
         .attr("y", function (d){
             if(d.percentDiff > 0)
@@ -153,6 +155,21 @@ function makeDivergingChart(group, dataset){
         .attr("fill", function(d){
             return divergeScale(d.percentDiff)
         })
+
+    bars.append("text")
+        .attr("y",  function(d) {
+            if (d.percentDiff > 0) {
+                return yScale2(d.percentDiff) - 4
+            }
+            else{
+                return yScale2(d.percentDiff) + 14
+            }
+        })
+        .attr("x", function (d){ return xScale2(d.group) + (xScale2.bandwidth()/2) })
+        .attr("fill", "white")
+        .attr("font-size", "12px")
+        .attr("text-anchor", "middle")
+        .text(function (d){ return d.percentDiff + "%" })
 
     group.append("g")
         .call(d3.axisBottom(xScale2))
