@@ -403,7 +403,7 @@ d3.csv("soc_movement_growth.csv").then(function(data){
         .style("width", "20vw")
         .style("height", "3.5vw")
         .style("display", "block")
-        .style("margin", "1.5vw auto 0.5vw auto")
+        .style("margin", "1.5vw auto 0.4vw auto")
         .style("color", "white")
         .style("background-color", "black")
         .style("border", "0.4vw darkblue solid")
