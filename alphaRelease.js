@@ -5,7 +5,7 @@ const width = 650, height = 500
 let barDiv1 = d3.select("body")
     .append("div")
     .attr("id", "albumSales")
-    .style("width", "75vw")
+    .style("width", "80vw")
     .style("height", "600px")
     .style("display", "flex")
     .style("align-items", "center")
@@ -259,7 +259,7 @@ let clicked = false
 
 let bubbleDiv = d3.select("body")
     .append("div")
-    .style("width", "75vw")
+    .style("width", "80vw")
     .style("height", "490px")
     .style("display", "flex")
     .style("align-items", "center")
