@@ -246,7 +246,7 @@ makeDivergingChart(g3, totalUSAudioStreams)
 
 let banner2 = d3.select("body")
     .append("div")
-    .attr("class", "banner")
+    .attr("class", "bannerSections")
     .text("Impact of Social Movements & Events")
 
 let bubbleObjects = []
