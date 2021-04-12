@@ -126,13 +126,13 @@ d3.csv("phys_album_sales.csv").then(function(data)
 })
 
 function makeDivergingChart(group, dataset){
-    let graphHeight2 = 140,
-        graphWidth2 = 250
-    let xScale2 = d3.scaleBand().range([0, graphWidth2]).padding(0.2)
+    let graphHeight2 = 150,
+        graphWidth2 = 220
+    let xScale2 = d3.scaleBand().range([0, graphWidth2]).padding(0.3)
     let yScale2 = d3.scaleLinear().range([graphHeight2, 0])
 
     xScale2.domain(["2018-2019","2019-2020"])
-    yScale2.domain([-30, 30])
+    yScale2.domain([-35, 35])
     let bars = group.append("g")
         .selectAll("g")
         .data(dataset)
@@ -167,7 +167,7 @@ function makeDivergingChart(group, dataset){
         })
         .attr("x", function (d){ return xScale2(d.group) + (xScale2.bandwidth()/2) })
         .attr("fill", "white")
-        .attr("font-size", "12px")
+        .attr("font-size", "11px")
         .attr("text-anchor", "middle")
         .text(function (d){ return d.percentDiff + "%" })
 
@@ -177,6 +177,13 @@ function makeDivergingChart(group, dataset){
 
     group.append("g")
         .call(d3.axisLeft(yScale2).ticks(4))
+
+    group.append("line")
+        .style("stroke", "white")
+        .attr("x1", 0)
+        .attr("y1", yScale2(0))
+        .attr("x2", graphWidth2)
+        .attr("y2", yScale2(0));
 }
 
 const width2 = 340, height2 = 240
@@ -237,10 +244,10 @@ svg3.append("text")
     .text("Percentage Change of Audio Streams")
 
 let g2 = svg2.append("g")
-    .attr("transform", "translate(34, 70)")
+    .attr("transform", "translate(42, 70)")
 
 let g3 = svg3.append("g")
-    .attr("transform", "translate(34, 70)")
+    .attr("transform", "translate(42, 70)")
 
 
 let legendD = d3.legendColor()
@@ -248,15 +255,15 @@ let legendD = d3.legendColor()
     .scale(divergeScale)
 svg2.append("g")
     .attr("class", "legendOrdinal")
-    .attr("transform", "translate(290,70)")
-    .attr("font-size", "0.7vw")
+    .attr("transform", "translate(270,104)")
+    .attr("font-size", "9px")
     .style("fill", "white")
 svg2.select(".legendOrdinal")
     .call(legendD)
 svg3.append("g")
     .attr("class", "legendOrdinal")
-    .attr("transform", "translate(290,70)")
-    .attr("font-size", "0.7vw")
+    .attr("transform", "translate(270,104)")
+    .attr("font-size", "9px")
     .style("fill", "white")
 svg3.select(".legendOrdinal")
     .call(legendD)
