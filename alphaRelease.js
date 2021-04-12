@@ -1,6 +1,6 @@
 const margin = {top: 45, right: 65, bottom: 45, left: 65}
 
-const width = 650, height = 500
+const width = 620, height = 500
 
 let barDiv1 = d3.select("body")
     .append("div")
@@ -17,15 +17,17 @@ let barDiv1 = d3.select("body")
 
 barDiv1.append("div")
     .attr("id", "mainChart")
-    .style("width", "660px")
+    .style("width", "630px")
     .style("height", "510px")
+    .style("margin", "auto")
 
 barDiv1.append("div")
     .attr("id", "subCharts")
-    .style("width", "420px")
+    .style("width", "410px")
     .style("height", "510px")
     .style("border", "0.3vw white solid")
     .style("background-color", "#03063b")
+    .style("margin", "auto")
 
 let svg = d3.select("#mainChart")
     .append("svg")
@@ -401,7 +403,7 @@ d3.csv("soc_movement_growth.csv").then(function(data){
         .style("width", "20vw")
         .style("height", "3.5vw")
         .style("display", "block")
-        .style("margin", "0px auto 10px auto")
+        .style("margin", "1.5vw auto 0.4vw auto")
         .style("color", "white")
         .style("background-color", "black")
         .style("border", "0.4vw darkblue solid")
