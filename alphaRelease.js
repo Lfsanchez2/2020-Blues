@@ -186,6 +186,123 @@ function makeDivergingChart(group, dataset){
         .attr("y2", yScale2(0));
 }
 
+d3.select("body")
+    .append("div")
+    .attr("class", "bannerSections")
+    .text("Share of Total Volume By Format & Genre: 2019 vs. 2020")
+
+// Reference for responsiveness:
+// https://medium.com/@louisemoxy/a-simple-way-to-make-d3-js-charts-svgs-responsive-7afb04bc2e4b
+
+// Reference for Force Cluster Graph
+// https://bl.ocks.org/d3indepth/9d9f03a0016bc9df0f13b0d52978c02f
+
+let volumeCirclePack = d3.select("body")
+    .append("div")
+    .attr("id", "volumes")
+    .style("width", "80vw")
+    .style("height", "45vw")
+    .style("margin", "3vw auto 3vw auto")
+    .style("display", "block")
+    .style("border", "2px white solid")
+
+let volumeSVG = d3.select("#volumes")
+    .append("svg")
+    .attr("preserveAspectRatio", "xMinYMin meet")
+    .attr("viewBox", "0,0,500,281")
+    .style("background-color", "#03063b")
+
+volumeSVG.append("g")
+    .attr("class", "legendOrdinal")
+    .attr("transform", "translate(15,10)")
+    .attr("font-size", "9px")
+    .style("fill", "white")
+
+let yearScale2 = d3.scaleOrdinal()
+    .domain(["2019", "2020"])
+    .range(["#ff5e00","#0059de"])
+
+let legend2 = d3.legendColor()
+    .shapeWidth(30)
+    .scale(yearScale2)
+
+volumeSVG.select(".legendOrdinal")
+    .call(legend2)
+
+let bubbleGroup = volumeSVG.append("g")
+let bubbleGroup2 = volumeSVG.append("g")
+let volumeObjects2019 = [[],[],[],[],[],[],[]]
+let volumeObjects2020 = [[],[],[],[],[],[],[]]
+
+d3.csv("total_volume_share.csv").then(function (data2){
+    for(let i = 0; i < data2.length; i++){
+        let arrayToAdd
+        if (i >= 12)
+            arrayToAdd = volumeObjects2019
+        else
+            arrayToAdd = volumeObjects2020
+        arrayToAdd[0].push(
+            {genre: data2[i]["GENRE"],
+             totalVol: +data2[i]["TOTAL VOLUME"],
+             radius: (Math.sqrt((+data2[i]["TOTAL VOLUME"]*250)/Math.PI))})
+        arrayToAdd[1].push(
+            {genre: data2[i]["GENRE"],
+             physicalAS: +data2[i]["PHYSICAL ALBUM SALES"],
+                radius: (Math.sqrt((+data2[i]["PHYSICAL ALBUM SALES"]*250)/Math.PI))})
+        arrayToAdd[2].push(
+            {genre: data2[i]["GENRE"],
+             digitalAS: +data2[i]["DIGITAL ALBUM SALES"],
+                radius: (Math.sqrt((+data2[i]["DIGITAL ALBUM SALES"]*250)/Math.PI))})
+        arrayToAdd[3].push(
+            {genre: data2[i]["GENRE"],
+             digitalSongSales: +data2[i]["DIGITAL SONG SALES"],
+                radius: (Math.sqrt((+data2[i]["DIGITAL SONG SALES"]*250)/Math.PI))})
+        arrayToAdd[4].push(
+            {genre: data2[i]["GENRE"],
+             totalODStreams: +data2[i]["TOTAL ON-DEMAND STREAMS"],
+                radius: (Math.sqrt((+data2[i]["TOTAL ON-DEMAND STREAMS"]*250)/Math.PI))})
+        arrayToAdd[5].push(
+            {genre: data2[i]["GENRE"],
+                ODAudioStreams: +data2[i]["ON-DEMAND AUDIO STREAMS"],
+                radius: (Math.sqrt((+data2[i]["ON-DEMAND AUDIO STREAMS"]*250)/Math.PI))})
+        arrayToAdd[6].push(
+            {genre: data2[i]["GENRE"],
+             ODVideoStreams: +data2[i]["ON-DEMAND VIDEO STREAMS"],
+                radius: (Math.sqrt((+data2[i]["ON-DEMAND VIDEO STREAMS"]*250)/Math.PI))})
+    }
+    function makeForces (dataset, group, color, offset) {
+        d3.forceSimulation(dataset)
+            .force("charge", d3.forceManyBody(dataset).strength(8))
+            .force("center", d3.forceCenter().x(offset).y(120-(group.attr("height")/2)))
+            .force('collision', d3.forceCollide().radius(function (d) {
+                return d.radius
+            }))
+            .on('tick', function (){
+                let allNodes = group
+                    .selectAll('circle')
+                    .data(dataset)
+
+                allNodes.enter()
+                    .append('circle')
+                    .attr("fill",color)
+                    .attr("stroke", "white")
+                    .attr('r', function(d) {
+                        return d.radius
+                    })
+                    .merge(allNodes)
+                    .attr('cx', function(d) {
+                        return d.x
+                    })
+                    .attr('cy', function(d) {
+                        return d.y
+                    })
+
+                allNodes.exit().remove()})
+    }
+    makeForces(volumeObjects2020[0], bubbleGroup, "#0059de", 360)
+    makeForces(volumeObjects2019[0], bubbleGroup2, "#ff5e00",120)
+})
+
 const width2 = 340, height2 = 240
 
 let totalUSAlbumSales = [
@@ -270,7 +387,7 @@ svg3.select(".legendOrdinal")
 makeDivergingChart(g2, totalUSAlbumSales)
 makeDivergingChart(g3, totalUSAudioStreams)
 
-let banner2 = d3.select("body")
+d3.select("body")
     .append("div")
     .attr("class", "bannerSections")
     .text("Impact of Social Movements & Events")
