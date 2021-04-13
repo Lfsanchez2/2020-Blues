@@ -1,7 +1,7 @@
 .banner{
     position: fixed;
-    left: 0%;
-    top: 0%;
+    left: 0;
+    top: 0;
     color: white;
     border-bottom: 1vw white double;
     display: flex;
@@ -24,18 +24,30 @@
     margin: auto;
 }
 
-  .Title{
-      margin-top: 10vw;
-      margin-bottom: 1vw;
-      color: black;
-      font-size: 5.5vw;
-      text-align: center;
-  }
+.Title{
+    margin-top: 10vw;
+    margin-bottom: 1vw;
+    color: black;
+    font-size: 5.5vw;
+    text-align: center;
+}
 
-  .desc{
-      margin: 2vw auto 2vw auto;
-      margin: 1.8vw auto 1.8vw auto;
-      width: 75%;
-      padding: 2vw;
-      font-size: 2vw;
-  }
+.desc{
+    margin: 2vw auto 2vw auto;
+    width: 75%;
+    padding: 2vw;
+    font-size: 2vw;
+}
+
+.pageLink{
+    font-size: 2vw;
+    text-align: center;
+}
+
+.mainBullets{
+    padding-bottom: 35px;
+}
+
+.indent{
+    padding-left: 40px;
+}

@@ -43,7 +43,7 @@ let g = svg.append("g")
 svg.append("g")
     .attr("class", "legendOrdinal")
     .attr("transform", "translate(100,50)")
-    .attr("font-size", "0.85vw")
+    .attr("font-size", "9px")
     .style("fill", "white")
 
 let yearScale = d3.scaleOrdinal()
