@@ -289,15 +289,15 @@ let volumeCirclePack = d3.select("body")
     .append("div")
     .attr("id", "volumes")
     .style("width", "80vw")
-    .style("height", "45vw")
     .style("margin", "3vw auto 3vw auto")
     .style("display", "block")
+    .style("position", "relative")
     .style("border", "2px white solid")
 
-let volumeSVG = d3.select("#volumes")
-    .append("svg")
+let volumeSVG = volumeCirclePack.append("svg")
     .attr("preserveAspectRatio", "xMinYMin meet")
-    .attr("viewBox", "0,0,500,281")
+    .attr("viewBox", "0,0,600,300")
+    .style("display", "block")
     .style("background-color", "#03063b")
 
 volumeSVG.append("g")
@@ -324,71 +324,180 @@ let volumeObjects2020 = [[],[],[],[],[],[],[]]
 
 d3.csv("total_volume_share.csv").then(function (data2){
     for(let i = 0; i < data2.length; i++){
-        let arrayToAdd
-        if (i >= 12)
+        let arrayToAdd;
+        let color;
+        if (i < 11) {
+            arrayToAdd = volumeObjects2020;
+            color = "#0059de";
+        }
+        else {
             arrayToAdd = volumeObjects2019
-        else
-            arrayToAdd = volumeObjects2020
+            color = "#ff5e00";
+        }
         arrayToAdd[0].push(
-            {genre: data2[i]["GENRE"],
-             totalVol: +data2[i]["TOTAL VOLUME"],
-             radius: (Math.sqrt((+data2[i]["TOTAL VOLUME"]*250)/Math.PI))})
+            {genre: data2[i]["GENRE"], color: color, type: "Volume",
+             data: +data2[i]["TOTAL VOLUME"],
+             radius: (Math.sqrt((+data2[i]["TOTAL VOLUME"]*275)/Math.PI))})
         arrayToAdd[1].push(
-            {genre: data2[i]["GENRE"],
-             physicalAS: +data2[i]["PHYSICAL ALBUM SALES"],
-                radius: (Math.sqrt((+data2[i]["PHYSICAL ALBUM SALES"]*250)/Math.PI))})
+            {genre: data2[i]["GENRE"], color: color, type: "Physical Album Sales",
+             data: +data2[i]["PHYSICAL ALBUM SALES"],
+                radius: (Math.sqrt((+data2[i]["PHYSICAL ALBUM SALES"]*275)/Math.PI))})
         arrayToAdd[2].push(
-            {genre: data2[i]["GENRE"],
-             digitalAS: +data2[i]["DIGITAL ALBUM SALES"],
-                radius: (Math.sqrt((+data2[i]["DIGITAL ALBUM SALES"]*250)/Math.PI))})
+            {genre: data2[i]["GENRE"], color: color, type: "Digital Album Sales",
+             data: +data2[i]["DIGITAL ALBUM SALES"],
+                radius: (Math.sqrt((+data2[i]["DIGITAL ALBUM SALES"]*275)/Math.PI))})
         arrayToAdd[3].push(
-            {genre: data2[i]["GENRE"],
-             digitalSongSales: +data2[i]["DIGITAL SONG SALES"],
-                radius: (Math.sqrt((+data2[i]["DIGITAL SONG SALES"]*250)/Math.PI))})
+            {genre: data2[i]["GENRE"], color: color, type: "Digital Song Sales",
+             data: +data2[i]["DIGITAL SONG SALES"],
+                radius: (Math.sqrt((+data2[i]["DIGITAL SONG SALES"]*275)/Math.PI))})
         arrayToAdd[4].push(
-            {genre: data2[i]["GENRE"],
-             totalODStreams: +data2[i]["TOTAL ON-DEMAND STREAMS"],
-                radius: (Math.sqrt((+data2[i]["TOTAL ON-DEMAND STREAMS"]*250)/Math.PI))})
+            {genre: data2[i]["GENRE"], color: color, type: "Total On-Demand Streams",
+             data: +data2[i]["TOTAL ON-DEMAND STREAMS"],
+                radius: (Math.sqrt((+data2[i]["TOTAL ON-DEMAND STREAMS"]*275)/Math.PI))})
         arrayToAdd[5].push(
-            {genre: data2[i]["GENRE"],
-                ODAudioStreams: +data2[i]["ON-DEMAND AUDIO STREAMS"],
-                radius: (Math.sqrt((+data2[i]["ON-DEMAND AUDIO STREAMS"]*250)/Math.PI))})
+            {genre: data2[i]["GENRE"], color: color, type: "On-Demand Audio Streams",
+                data: +data2[i]["ON-DEMAND AUDIO STREAMS"],
+                radius: (Math.sqrt((+data2[i]["ON-DEMAND AUDIO STREAMS"]*275)/Math.PI))})
         arrayToAdd[6].push(
-            {genre: data2[i]["GENRE"],
-             ODVideoStreams: +data2[i]["ON-DEMAND VIDEO STREAMS"],
-                radius: (Math.sqrt((+data2[i]["ON-DEMAND VIDEO STREAMS"]*250)/Math.PI))})
+            {genre: data2[i]["GENRE"], color: color, type: "On-Demand Video Streams",
+             data: +data2[i]["ON-DEMAND VIDEO STREAMS"],
+                radius: (Math.sqrt((+data2[i]["ON-DEMAND VIDEO STREAMS"]*275)/Math.PI))})
     }
-    function makeForces (dataset, group, color, offset) {
-        d3.forceSimulation(dataset)
+    function makeForces (dataset, group, offset) {
+        let graph = d3.forceSimulation(dataset)
             .force("charge", d3.forceManyBody(dataset).strength(8))
-            .force("center", d3.forceCenter().x(offset).y(120-(group.attr("height")/2)))
+            .force("center", d3.forceCenter().x(offset).y(165-(group.attr("height")/2)))
             .force('collision', d3.forceCollide().radius(function (d) {
                 return d.radius
             }))
-            .on('tick', function (){
-                let allNodes = group
-                    .selectAll('circle')
-                    .data(dataset)
+        let allNodes = group.selectAll('circle')
+            .data(dataset)
+            .enter()
+            .append('circle')
+            .attr("class", function (d){
+                if(d.genre === "R&B/HIP-HOP")
+                    return "RNBHIP-HOP"
+                else if(d.genre === "DANCE/ELECTRONIC")
+                    return "DANCE-ELECTRONIC"
+                else if(d.genre === "HOLIDAY/SEASONAL")
+                    return "HOLIDAY-SEASONAL"
+                else if(d.genre === "CHRISTIAN/GOSPEL")
+                    return "CHRISTIAN-GOSPEL"
+                else
+                    return d.genre })
+            .attr("fill", function (d) { return d.color })
+            .attr("stroke", "white")
+            .attr('r', function(d) {
+                return d.radius
+            })
+            .on("mouseover", function (e, d){
+                let tag
+                if(d.genre === "R&B/HIP-HOP")
+                    tag = "RNBHIP-HOP"
+                else if(d.genre === "DANCE/ELECTRONIC")
+                    tag = "DANCE-ELECTRONIC"
+                else if(d.genre === "HOLIDAY/SEASONAL")
+                    tag = "HOLIDAY-SEASONAL"
+                else if(d.genre === "CHRISTIAN/GOSPEL")
+                    tag = "CHRISTIAN-GOSPEL"
+                else
+                    tag = d.genre
+                let highlights = d3.selectAll("."+tag);
+                highlights.attr("fill", "red");
+                let circle2019 = highlights._groups[0][0].__data__
+                let descRow1 = volumeSVG.append("text")
+                    .attr("class", "tooltip-desc1")
+                    .attr("x", (circle2019.x-30)+"px")
+                    .attr("y", (circle2019.y-50)+"px")
+                    .attr("fill", "white")
+                    .attr("font-size", "10px")
+                    .text("Genre: "+circle2019.genre)
+                let descRow2 = volumeSVG.append("text")
+                    .attr("class", "tooltip-desc2")
+                    .attr("x", (circle2019.x-30)+"px")
+                    .attr("y", (circle2019.y-35)+"px")
+                    .attr("fill", "white")
+                    .attr("font-size", "10px")
+                    .text(circle2019.type+" Share: "+circle2019.data+"%");
+                let bbox1 = descRow1.node().getBBox();
+                let bbox2 = descRow2.node().getBBox();
+                volumeSVG.append("rect")
+                    .attr("class", "tooltip-bg")
+                    .attr("x", (bbox1.x-10))
+                    .attr("y", (bbox1.y-10))
+                    .attr("fill", "black")
+                    .attr("width", function (d){
+                        if(bbox1.width > bbox2.width)
+                            return bbox1.width+20;
+                        else
+                            return bbox2.width+20;
+                    })
+                    .attr("height", (bbox1.height+bbox2.height)+20);
+                if(highlights._groups[0].length > 1){
+                    let circle2020 = highlights._groups[0][1].__data__
+                    let descRow2020A = volumeSVG.append("text")
+                        .attr("class", "tooltip-desc1")
+                        .attr("x", (circle2020.x-30)+"px")
+                        .attr("y", (circle2020.y-50)+"px")
+                        .attr("fill", "white")
+                        .attr("font-size", "10px")
+                        .text("Genre: "+circle2020.genre)
+                    let descRow2020B = volumeSVG.append("text")
+                        .attr("class", "tooltip-desc2")
+                        .attr("x", (circle2020.x-30)+"px")
+                        .attr("y", (circle2020.y-35)+"px")
+                        .attr("fill", "white")
+                        .attr("font-size", "10px")
+                        .text(circle2020.type+" Share: "+circle2020.data+"%");
+                    let bbox1B = descRow2020A.node().getBBox();
+                    let bbox2B = descRow2020B.node().getBBox();
+                    volumeSVG.append("rect")
+                        .attr("class", "tooltip-bg")
+                        .attr("x", (bbox1B.x-10))
+                        .attr("y", (bbox1B.y-10))
+                        .attr("fill", "black")
+                        .attr("width", function (d){
+                            if(bbox1B.width > bbox2B.width)
+                                return bbox1B.width+20;
+                            else
+                                return bbox2B.width+20;
+                        })
+                        .attr("height", (bbox1B.height+bbox2B.height)+20);
+                }
+                d3.selectAll(".tooltip-bg").raise()
+                d3.selectAll(".tooltip-desc1").raise();
+                d3.selectAll(".tooltip-desc2").raise();
+            })
+            .on("mouseout", function (e, d){
+                let tag;
+                if(d.genre === "R&B/HIP-HOP")
+                    tag = "RNBHIP-HOP"
+                else if(d.genre === "DANCE/ELECTRONIC")
+                    tag = "DANCE-ELECTRONIC"
+                else if(d.genre === "HOLIDAY/SEASONAL")
+                    tag = "HOLIDAY-SEASONAL"
+                else if(d.genre === "CHRISTIAN/GOSPEL")
+                    tag = "CHRISTIAN-GOSPEL"
+                else
+                    tag = d.genre
+                bubbleGroup.select("."+tag).attr("fill", "#0059de")
+                bubbleGroup2.select("."+tag).attr("fill", "#ff5e00")
+                d3.selectAll(".tooltip-bg").remove()
+                d3.selectAll(".tooltip-desc1").remove();
+                d3.selectAll(".tooltip-desc2").remove();
+            })
 
-                allNodes.enter()
-                    .append('circle')
-                    .attr("fill",color)
-                    .attr("stroke", "white")
-                    .attr('r', function(d) {
-                        return d.radius
-                    })
-                    .merge(allNodes)
-                    .attr('cx', function(d) {
-                        return d.x
-                    })
-                    .attr('cy', function(d) {
-                        return d.y
-                    })
-
-                allNodes.exit().remove()})
+        graph.nodes(dataset).on("tick", function (d){
+            allNodes.attr('cx', function(d) {
+                    return d.x
+                })
+                .attr('cy', function(d) {
+                    return d.y
+                })
+        })
     }
-    makeForces(volumeObjects2020[0], bubbleGroup, "#0059de", 360)
-    makeForces(volumeObjects2019[0], bubbleGroup2, "#ff5e00",120)
+    makeForces(volumeObjects2020[0], bubbleGroup, 420)
+    makeForces(volumeObjects2019[0], bubbleGroup2,180)
 })
 
 
@@ -418,19 +527,35 @@ let bubbleDiv = d3.select("body")
     .style("overflow", "auto")
 
 bubbleDiv.append("div")
+    .style("width", "75vw")
+    .style("display", "block")
+    .style("margin", "3vw auto 1.5vw auto")
+    .style("font-size", "2vw")
+    .style("color", "white")
+    .style("text-align", "center")
+    .html("Songs That Grew Into The Top 5 Most Streamed");
+
+bubbleDiv.append("div")
     .attr("id", "songBubbles")
     .style("width", "75vw")
     .style("display", "block")
-    .style("margin", "auto")
+    .style("margin", "1vw auto 1vw auto")
 
 let bubbleSvg = d3.select("#songBubbles")
     .append("svg")
-    // .attr("width", 1100)
-    // .attr("height", 350)
     .attr("preserveAspectRatio", "xMinYMin meet")
-    .attr("viewBox", "0,0,1100,350")
+    .attr("viewBox", "0,0,1100,450")
     .style("display", "block")
-    .style("margin", "42px auto 0px auto")
+    .style("margin", "0.8vw auto 0.8vw auto")
+
+let bubbleTitle = bubbleSvg.append("text")
+    .attr("x", "550px")
+    .attr("y", "30px")
+    .attr("fill", "white")
+    .attr("text-anchor", "middle")
+    .style("font-size", "25px")
+    .style("text-decoration", "underline")
+    .text("Week of May 22nd, 2020 to May 27th, 2020");
 
 let defs = bubbleSvg.append("defs")
 
@@ -440,17 +565,12 @@ function animateBubbles(){
     for(let i = 0; i < 5; i++) {
         images[i].transition()
             .duration(7000)
-            // .attr("height", bubbleObjects[i].second/2500)
-            // .attr("width", bubbleObjects[i].second/2500)
-            .attr("height", Math.sqrt(bubbleObjects[i].second / Math.PI)/2.5)
-            .attr("width", Math.sqrt(bubbleObjects[i].second / Math.PI)/2.5)
-
-        console.log(Math.sqrt(bubbleObjects[i].second / Math.PI)/5)
+            .attr("height", Math.sqrt(bubbleObjects[i].second / Math.PI)/2)
+            .attr("width", Math.sqrt(bubbleObjects[i].second / Math.PI)/2)
 
         bubbles[i].transition()
             .duration(7000)
-            // .attr("r", bubbleObjects[i].second / 5000)
-            .attr("r", Math.sqrt(bubbleObjects[i].second / Math.PI)/5)
+            .attr("r", Math.sqrt(bubbleObjects[i].second / Math.PI)/4)
 
         let format = d3.format(",")
         streamCounts[i].transition()
@@ -463,15 +583,23 @@ function animateBubbles(){
                     d3.select(this).text(format(Math.round(interpolator(t))))
                 }
             })
-            // .attr("y", 175-(bubbleObjects[i].second/5000)-18)
-            .attr("y", 175-(Math.sqrt(bubbleObjects[i].second / Math.PI)/5)-18)
+            .attr("y", 260-(Math.sqrt(bubbleObjects[i].second / Math.PI)/4)-18)
             .duration(6350)
 
         songTitles[i].transition()
             .duration(7100)
-            // .attr("y", 175+(bubbleObjects[i].second/5000)+35)
-            .attr("y", 175+(Math.sqrt(bubbleObjects[i].second / Math.PI)/5)+35)
+            .attr("y", 260+(Math.sqrt(bubbleObjects[i].second / Math.PI)/4)+35)
     }
+    bubbleTitle.transition()
+        .duration(3600)
+        .style("opacity", "0")
+
+    bubbleTitle.transition()
+        .delay(3000)
+        .duration(3500)
+        .text("Week of May 28th, 2020 to June 6th, 2020 - After George Floyd's Death")
+        .style("opacity", "1");
+
 }
 function drawBubbles(obj, index, xPos){
     //References for images and patterns:
@@ -485,8 +613,8 @@ function drawBubbles(obj, index, xPos){
         .attr("height", 1)
         .append("svg:image")
         .attr("xlink:href", obj[index].image)
-        .attr("height", Math.sqrt(obj[index].first / Math.PI)/2.5)
-        .attr("width", Math.sqrt(obj[index].first / Math.PI)/2.5)
+        .attr("height", Math.sqrt(obj[index].first / Math.PI)/2)
+        .attr("width", Math.sqrt(obj[index].first / Math.PI)/2)
         .attr("x", 0)
         .attr("y", 0)
     images.push(image)
@@ -494,20 +622,20 @@ function drawBubbles(obj, index, xPos){
     let songBubble = bubble.append("circle")
         .style("stroke", "white")
         .attr("fill", "url(#songName"+index+")")
-        .attr("cy", 175)
+        .attr("cy", 260)
         .attr("cx", xPos)
         // .attr("r", obj[index].first/5000)
-        .attr("r", Math.sqrt(obj[index].first / Math.PI)/5)
+        .attr("r", Math.sqrt(obj[index].first / Math.PI)/4)
 
     bubbles.push(songBubble)
     console.log(bubbleSvg.attr("height"))
 
     let format = d3.format(",")
     let streamCount = bubble.append("text")
-        .style("font-size", "1.8vw")
+        .style("font-size", "25px")
         .attr("x", xPos)
         // .attr("y", 175-(obj[index].first/5000)-18)
-        .attr("y", 175-(Math.sqrt(obj[index].first / Math.PI)/5)-18)
+        .attr("y", 260-(Math.sqrt(obj[index].first / Math.PI)/4)-18)
         .attr("text-anchor", "middle")
         .attr("fill", "white")
         .text(format(obj[index].first))
@@ -519,8 +647,8 @@ function drawBubbles(obj, index, xPos){
         .attr("fill", "white")
         .attr("x", xPos)
         // .attr("y", 175+(obj[index].first/5000)+35)
-        .attr("y", 175+(Math.sqrt(obj[index].first / Math.PI)/5)+35)
-        .style("font-size", "1.3vw")
+        .attr("y", 260+(Math.sqrt(obj[index].first / Math.PI)/4)+35)
+        .style("font-size", "18px")
         .text("\""+obj[index].song+"\"")
     songTitles.push(bubbleTitle)
 }
@@ -536,15 +664,18 @@ d3.csv("soc_movement_growth.csv").then(function(data){
             image: data[i]["image"]
         })
         if(i === 0){
-            circleXPos.push(((+data[i]["second week"])/5000)+12)
+            circleXPos.push((
+                Math.sqrt(+data[i]["second week"]/Math.PI)/4)+12)
         }
         else if (i===1){
             circleXPos.push(
-                (circleXPos[i-1]/2)+((+data[i]["second week"])/5000)+80)
+                (circleXPos[i-1]/2)+(
+                Math.sqrt(+data[i]["second week"]/Math.PI)/4)+80)
         }
         else{
             circleXPos.push(
-                (circleXPos[i-1]/2)+((+data[i]["second week"])/5000)+10)
+                (circleXPos[i-1]/2)+(
+                Math.sqrt(+data[i]["second week"]/Math.PI)/4)+10)
         }
     }
     for(let i = 1; i < 5; i++){
@@ -555,14 +686,13 @@ d3.csv("soc_movement_growth.csv").then(function(data){
     }
 
 
-    let aniButton = d3.select("#songBubbles")
-        .append("button")
+    let aniButton = bubbleDiv.append("button")
         .text("Click to Run Growth Animation")
         .style("font-size", "1vw")
         .style("width", "20vw")
         .style("height", "3.5vw")
         .style("display", "block")
-        .style("margin", "1.5vw auto 2vw auto")
+        .style("margin", "0.8vw auto 2.8vw auto")
         .style("color", "white")
         .style("background-color", "black")
         .style("border", "0.4vw darkblue solid")
