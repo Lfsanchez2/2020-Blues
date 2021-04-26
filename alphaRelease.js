@@ -285,42 +285,187 @@ d3.select("body")
 // Reference for Force Cluster Graph
 // https://bl.ocks.org/d3indepth/9d9f03a0016bc9df0f13b0d52978c02f
 
+let selectionDiv = d3.select("body")
+    .append("div")
+    .attr("id", "choices_container")
+    .style("width", "80vw")
+    .style("margin", "0.5vw auto 0.5vw auto")
+    .style("padding", "1vw")
+
+let choices = [
+    {name: "Volume", index: 0},
+    {name: "Physical Album Sales", index: 1},
+    {name: "Digital Album Sales", index: 2},
+    {name: "Digital Song Sales", index: 3},
+    {name: "Total On-Demand Streams", index: 4},
+    {name: "On-Demand Audio Streams", index: 5},
+    {name: "On-Demand Video Streams", index: 6}];
+
+let dropDown = d3.select("#choices_container")
+    .append("select")
+    .attr("class", "selection")
+    .style("font-size", "1.5vw")
+    .style("padding", "0.8vw")
+    .attr("name", "Chart-Type")
+let options = dropDown.selectAll("option")
+    .data(choices)
+    .enter()
+    .append("option");
+options.text(function (d){
+    return d.name;
+})
+    .attr("value", function (d){
+        return d.index;
+    })
+
 let volumeCirclePack = d3.select("body")
     .append("div")
     .attr("id", "volumes")
     .style("width", "80vw")
-    .style("margin", "3vw auto 3vw auto")
+    .style("margin", "0vw auto 3vw auto")
     .style("display", "block")
     .style("position", "relative")
     .style("border", "2px white solid")
 
-let volumeSVG = volumeCirclePack.append("svg")
-    .attr("preserveAspectRatio", "xMinYMin meet")
-    .attr("viewBox", "0,0,600,300")
-    .style("display", "block")
-    .style("background-color", "#03063b")
+let volumeSVG;
 
-volumeSVG.append("g")
-    .attr("class", "legendOrdinal")
-    .attr("transform", "translate(15,10)")
-    .attr("font-size", "9px")
-    .style("fill", "white")
-
-let yearScale2 = d3.scaleOrdinal()
-    .domain(["2019", "2020"])
-    .range(["#ff5e00","#0059de"])
-
-let legend2 = d3.legendColor()
-    .shapeWidth(30)
-    .scale(yearScale2)
-
-volumeSVG.select(".legendOrdinal")
-    .call(legend2)
-
-let bubbleGroup = volumeSVG.append("g")
-let bubbleGroup2 = volumeSVG.append("g")
 let volumeObjects2019 = [[],[],[],[],[],[],[]]
 let volumeObjects2020 = [[],[],[],[],[],[],[]]
+function makeForces (dataset, group, other, offset) {
+    let graph = d3.forceSimulation(dataset)
+        .force("charge", d3.forceManyBody(dataset).strength(8))
+        .force("center", d3.forceCenter().x(offset).y(165-(group.attr("height")/2)))
+        .force('collision', d3.forceCollide().radius(function (d) {
+            return d.radius
+        }))
+    let allNodes = group.selectAll('circle')
+        .data(dataset)
+        .enter()
+        .append('circle')
+        .attr("class", function (d){
+            if(d.genre === "R&B/HIP-HOP")
+                return "RNBHIP-HOP"
+            else if(d.genre === "DANCE/ELECTRONIC")
+                return "DANCE-ELECTRONIC"
+            else if(d.genre === "HOLIDAY/SEASONAL")
+                return "HOLIDAY-SEASONAL"
+            else if(d.genre === "CHRISTIAN/GOSPEL")
+                return "CHRISTIAN-GOSPEL"
+            else
+                return d.genre })
+        .attr("fill", function (d) { return d.color })
+        .attr("stroke", "white")
+        .attr('r', function(d) {
+            return d.radius
+        })
+        .on("mouseover", function (e, d){
+            let tag
+            if(d.genre === "R&B/HIP-HOP")
+                tag = "RNBHIP-HOP"
+            else if(d.genre === "DANCE/ELECTRONIC")
+                tag = "DANCE-ELECTRONIC"
+            else if(d.genre === "HOLIDAY/SEASONAL")
+                tag = "HOLIDAY-SEASONAL"
+            else if(d.genre === "CHRISTIAN/GOSPEL")
+                tag = "CHRISTIAN-GOSPEL"
+            else
+                tag = d.genre
+            let highlights = d3.selectAll("."+tag);
+            highlights.attr("fill", "red");
+            let circle2019 = highlights._groups[0][0].__data__
+            let descRow1 = volumeSVG.append("text")
+                .attr("class", "tooltip-desc1")
+                .attr("x", (circle2019.x-30)+"px")
+                .attr("y", (circle2019.y-50)+"px")
+                .attr("fill", "white")
+                .attr("font-size", "10px")
+                .text("Genre: "+circle2019.genre)
+            let descRow2 = volumeSVG.append("text")
+                .attr("class", "tooltip-desc2")
+                .attr("x", (circle2019.x-30)+"px")
+                .attr("y", (circle2019.y-35)+"px")
+                .attr("fill", "white")
+                .attr("font-size", "10px")
+                .text(circle2019.type+" Share: "+circle2019.data+"%");
+            let bbox1 = descRow1.node().getBBox();
+            let bbox2 = descRow2.node().getBBox();
+            volumeSVG.append("rect")
+                .attr("class", "tooltip-bg")
+                .attr("x", (bbox1.x-10))
+                .attr("y", (bbox1.y-10))
+                .attr("fill", "black")
+                .attr("width", function (d){
+                    if(bbox1.width > bbox2.width)
+                        return bbox1.width+20;
+                    else
+                        return bbox2.width+20;
+                })
+                .attr("height", (bbox1.height+bbox2.height)+20);
+            if(highlights._groups[0].length > 1){
+                let circle2020 = highlights._groups[0][1].__data__
+                let descRow2020A = volumeSVG.append("text")
+                    .attr("class", "tooltip-desc1")
+                    .attr("x", (circle2020.x-30)+"px")
+                    .attr("y", (circle2020.y-50)+"px")
+                    .attr("fill", "white")
+                    .attr("font-size", "10px")
+                    .text("Genre: "+circle2020.genre)
+                let descRow2020B = volumeSVG.append("text")
+                    .attr("class", "tooltip-desc2")
+                    .attr("x", (circle2020.x-30)+"px")
+                    .attr("y", (circle2020.y-35)+"px")
+                    .attr("fill", "white")
+                    .attr("font-size", "10px")
+                    .text(circle2020.type+" Share: "+circle2020.data+"%");
+                let bbox1B = descRow2020A.node().getBBox();
+                let bbox2B = descRow2020B.node().getBBox();
+                volumeSVG.append("rect")
+                    .attr("class", "tooltip-bg")
+                    .attr("x", (bbox1B.x-10))
+                    .attr("y", (bbox1B.y-10))
+                    .attr("fill", "black")
+                    .attr("width", function (d){
+                        if(bbox1B.width > bbox2B.width)
+                            return bbox1B.width+20;
+                        else
+                            return bbox2B.width+20;
+                    })
+                    .attr("height", (bbox1B.height+bbox2B.height)+20);
+            }
+            d3.selectAll(".tooltip-bg").raise()
+            d3.selectAll(".tooltip-desc1").raise();
+            d3.selectAll(".tooltip-desc2").raise();
+        })
+        .on("mouseout", function (e, d){
+            let tag;
+            if(d.genre === "R&B/HIP-HOP")
+                tag = "RNBHIP-HOP"
+            else if(d.genre === "DANCE/ELECTRONIC")
+                tag = "DANCE-ELECTRONIC"
+            else if(d.genre === "HOLIDAY/SEASONAL")
+                tag = "HOLIDAY-SEASONAL"
+            else if(d.genre === "CHRISTIAN/GOSPEL")
+                tag = "CHRISTIAN-GOSPEL"
+            else
+                tag = d.genre
+            let group1 = group.select("."+tag)
+            group1.attr("fill", function (d){ return d.color })
+            let group2 = other.select("."+tag)
+            group2.attr("fill", function (d){ return d.color })
+            d3.selectAll(".tooltip-bg").remove()
+            d3.selectAll(".tooltip-desc1").remove();
+            d3.selectAll(".tooltip-desc2").remove();
+        })
+
+    graph.nodes(dataset).on("tick", function (d){
+        allNodes.attr('cx', function(d) {
+            return d.x
+        })
+            .attr('cy', function(d) {
+                return d.y
+            })
+    })
+}
 
 d3.csv("total_volume_share.csv").then(function (data2){
     for(let i = 0; i < data2.length; i++){
@@ -339,167 +484,82 @@ d3.csv("total_volume_share.csv").then(function (data2){
              data: +data2[i]["TOTAL VOLUME"],
              radius: (Math.sqrt((+data2[i]["TOTAL VOLUME"]*275)/Math.PI))})
         arrayToAdd[1].push(
-            {genre: data2[i]["GENRE"], color: color, type: "Physical Album Sales",
+            {genre: data2[i]["GENRE"], color: color, type: "PAS",
              data: +data2[i]["PHYSICAL ALBUM SALES"],
                 radius: (Math.sqrt((+data2[i]["PHYSICAL ALBUM SALES"]*275)/Math.PI))})
         arrayToAdd[2].push(
-            {genre: data2[i]["GENRE"], color: color, type: "Digital Album Sales",
+            {genre: data2[i]["GENRE"], color: color, type: "DAS",
              data: +data2[i]["DIGITAL ALBUM SALES"],
                 radius: (Math.sqrt((+data2[i]["DIGITAL ALBUM SALES"]*275)/Math.PI))})
         arrayToAdd[3].push(
-            {genre: data2[i]["GENRE"], color: color, type: "Digital Song Sales",
+            {genre: data2[i]["GENRE"], color: color, type: "DSS",
              data: +data2[i]["DIGITAL SONG SALES"],
                 radius: (Math.sqrt((+data2[i]["DIGITAL SONG SALES"]*275)/Math.PI))})
         arrayToAdd[4].push(
-            {genre: data2[i]["GENRE"], color: color, type: "Total On-Demand Streams",
+            {genre: data2[i]["GENRE"], color: color, type: "TODS",
              data: +data2[i]["TOTAL ON-DEMAND STREAMS"],
                 radius: (Math.sqrt((+data2[i]["TOTAL ON-DEMAND STREAMS"]*275)/Math.PI))})
         arrayToAdd[5].push(
-            {genre: data2[i]["GENRE"], color: color, type: "On-Demand Audio Streams",
+            {genre: data2[i]["GENRE"], color: color, type: "ODAS",
                 data: +data2[i]["ON-DEMAND AUDIO STREAMS"],
                 radius: (Math.sqrt((+data2[i]["ON-DEMAND AUDIO STREAMS"]*275)/Math.PI))})
         arrayToAdd[6].push(
-            {genre: data2[i]["GENRE"], color: color, type: "On-Demand Video Streams",
+            {genre: data2[i]["GENRE"], color: color, type: "ODVS",
              data: +data2[i]["ON-DEMAND VIDEO STREAMS"],
                 radius: (Math.sqrt((+data2[i]["ON-DEMAND VIDEO STREAMS"]*275)/Math.PI))})
     }
-    function makeForces (dataset, group, offset) {
-        let graph = d3.forceSimulation(dataset)
-            .force("charge", d3.forceManyBody(dataset).strength(8))
-            .force("center", d3.forceCenter().x(offset).y(165-(group.attr("height")/2)))
-            .force('collision', d3.forceCollide().radius(function (d) {
-                return d.radius
-            }))
-        let allNodes = group.selectAll('circle')
-            .data(dataset)
-            .enter()
-            .append('circle')
-            .attr("class", function (d){
-                if(d.genre === "R&B/HIP-HOP")
-                    return "RNBHIP-HOP"
-                else if(d.genre === "DANCE/ELECTRONIC")
-                    return "DANCE-ELECTRONIC"
-                else if(d.genre === "HOLIDAY/SEASONAL")
-                    return "HOLIDAY-SEASONAL"
-                else if(d.genre === "CHRISTIAN/GOSPEL")
-                    return "CHRISTIAN-GOSPEL"
-                else
-                    return d.genre })
-            .attr("fill", function (d) { return d.color })
-            .attr("stroke", "white")
-            .attr('r', function(d) {
-                return d.radius
-            })
-            .on("mouseover", function (e, d){
-                let tag
-                if(d.genre === "R&B/HIP-HOP")
-                    tag = "RNBHIP-HOP"
-                else if(d.genre === "DANCE/ELECTRONIC")
-                    tag = "DANCE-ELECTRONIC"
-                else if(d.genre === "HOLIDAY/SEASONAL")
-                    tag = "HOLIDAY-SEASONAL"
-                else if(d.genre === "CHRISTIAN/GOSPEL")
-                    tag = "CHRISTIAN-GOSPEL"
-                else
-                    tag = d.genre
-                let highlights = d3.selectAll("."+tag);
-                highlights.attr("fill", "red");
-                let circle2019 = highlights._groups[0][0].__data__
-                let descRow1 = volumeSVG.append("text")
-                    .attr("class", "tooltip-desc1")
-                    .attr("x", (circle2019.x-30)+"px")
-                    .attr("y", (circle2019.y-50)+"px")
-                    .attr("fill", "white")
-                    .attr("font-size", "10px")
-                    .text("Genre: "+circle2019.genre)
-                let descRow2 = volumeSVG.append("text")
-                    .attr("class", "tooltip-desc2")
-                    .attr("x", (circle2019.x-30)+"px")
-                    .attr("y", (circle2019.y-35)+"px")
-                    .attr("fill", "white")
-                    .attr("font-size", "10px")
-                    .text(circle2019.type+" Share: "+circle2019.data+"%");
-                let bbox1 = descRow1.node().getBBox();
-                let bbox2 = descRow2.node().getBBox();
-                volumeSVG.append("rect")
-                    .attr("class", "tooltip-bg")
-                    .attr("x", (bbox1.x-10))
-                    .attr("y", (bbox1.y-10))
-                    .attr("fill", "black")
-                    .attr("width", function (d){
-                        if(bbox1.width > bbox2.width)
-                            return bbox1.width+20;
-                        else
-                            return bbox2.width+20;
-                    })
-                    .attr("height", (bbox1.height+bbox2.height)+20);
-                if(highlights._groups[0].length > 1){
-                    let circle2020 = highlights._groups[0][1].__data__
-                    let descRow2020A = volumeSVG.append("text")
-                        .attr("class", "tooltip-desc1")
-                        .attr("x", (circle2020.x-30)+"px")
-                        .attr("y", (circle2020.y-50)+"px")
-                        .attr("fill", "white")
-                        .attr("font-size", "10px")
-                        .text("Genre: "+circle2020.genre)
-                    let descRow2020B = volumeSVG.append("text")
-                        .attr("class", "tooltip-desc2")
-                        .attr("x", (circle2020.x-30)+"px")
-                        .attr("y", (circle2020.y-35)+"px")
-                        .attr("fill", "white")
-                        .attr("font-size", "10px")
-                        .text(circle2020.type+" Share: "+circle2020.data+"%");
-                    let bbox1B = descRow2020A.node().getBBox();
-                    let bbox2B = descRow2020B.node().getBBox();
-                    volumeSVG.append("rect")
-                        .attr("class", "tooltip-bg")
-                        .attr("x", (bbox1B.x-10))
-                        .attr("y", (bbox1B.y-10))
-                        .attr("fill", "black")
-                        .attr("width", function (d){
-                            if(bbox1B.width > bbox2B.width)
-                                return bbox1B.width+20;
-                            else
-                                return bbox2B.width+20;
-                        })
-                        .attr("height", (bbox1B.height+bbox2B.height)+20);
-                }
-                d3.selectAll(".tooltip-bg").raise()
-                d3.selectAll(".tooltip-desc1").raise();
-                d3.selectAll(".tooltip-desc2").raise();
-            })
-            .on("mouseout", function (e, d){
-                let tag;
-                if(d.genre === "R&B/HIP-HOP")
-                    tag = "RNBHIP-HOP"
-                else if(d.genre === "DANCE/ELECTRONIC")
-                    tag = "DANCE-ELECTRONIC"
-                else if(d.genre === "HOLIDAY/SEASONAL")
-                    tag = "HOLIDAY-SEASONAL"
-                else if(d.genre === "CHRISTIAN/GOSPEL")
-                    tag = "CHRISTIAN-GOSPEL"
-                else
-                    tag = d.genre
-                bubbleGroup.select("."+tag).attr("fill", "#0059de")
-                bubbleGroup2.select("."+tag).attr("fill", "#ff5e00")
-                d3.selectAll(".tooltip-bg").remove()
-                d3.selectAll(".tooltip-desc1").remove();
-                d3.selectAll(".tooltip-desc2").remove();
-            })
-
-        graph.nodes(dataset).on("tick", function (d){
-            allNodes.attr('cx', function(d) {
-                    return d.x
-                })
-                .attr('cy', function(d) {
-                    return d.y
-                })
-        })
-    }
-    makeForces(volumeObjects2020[0], bubbleGroup, 420)
-    makeForces(volumeObjects2019[0], bubbleGroup2,180)
+    volumeSVG = volumeCirclePack.append("svg")
+        .attr("class", "curr_chart")
+        .attr("preserveAspectRatio", "xMinYMin meet")
+        .attr("viewBox", "0,0,600,330")
+        .style("display", "block")
+        .style("background-color", "#03063b")
+    volumeSVG.append("g")
+        .attr("class", "legendOrdinal")
+        .attr("transform", "translate(15,10)")
+        .attr("font-size", "9px")
+        .style("fill", "white")
+    let yearScale2 = d3.scaleOrdinal()
+        .domain(["2019", "2020"])
+        .range(["#ff5e00","#0059de"])
+    let legend2 = d3.legendColor()
+        .shapeWidth(30)
+        .scale(yearScale2)
+    volumeSVG.select(".legendOrdinal")
+        .call(legend2)
+    let bubbleGroup = volumeSVG.append("g")
+    let bubbleGroup2 = volumeSVG.append("g")
+    makeForces(volumeObjects2020[0], bubbleGroup, bubbleGroup2, 420)
+    makeForces(volumeObjects2019[0], bubbleGroup2, bubbleGroup,180)
 })
 
+d3.select(".selection").on("change", function (d){
+    let selection = d3.select(this).property("value")
+    d3.select(".curr_chart").remove()
+    volumeSVG = volumeCirclePack.append("svg")
+        .attr("class", "curr_chart")
+        .attr("preserveAspectRatio", "xMinYMin meet")
+        .attr("viewBox", "0,0,600,330")
+        .style("display", "block")
+        .style("background-color", "#03063b")
+    volumeSVG.append("g")
+        .attr("class", "legendOrdinal")
+        .attr("transform", "translate(15,10)")
+        .attr("font-size", "9px")
+        .style("fill", "white")
+    let yearScale2 = d3.scaleOrdinal()
+        .domain(["2019", "2020"])
+        .range(["#ff5e00","#0059de"])
+    let legend2 = d3.legendColor()
+        .shapeWidth(30)
+        .scale(yearScale2)
+    volumeSVG.select(".legendOrdinal")
+        .call(legend2)
+    let bubbleGroup = volumeSVG.append("g")
+    let bubbleGroup2 = volumeSVG.append("g")
+    makeForces(volumeObjects2020[selection], bubbleGroup, bubbleGroup2, 420)
+    makeForces(volumeObjects2019[selection], bubbleGroup2, bubbleGroup,180)
+})
 
 d3.select("body")
     .append("div")
