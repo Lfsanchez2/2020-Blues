@@ -1,4 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Changa&family=Quantico:wght@700&display=swap');
+
+body{
+    overflow-x: hidden;
+}
+
 .banner{
+    font-family: 'Quantico', sans-serif;
     position: fixed;
     left: 0;
     top: 0;
@@ -13,15 +20,28 @@
     padding: 2vw;
   }
 
+.datasource{
+    color: white;
+    font-family: 'Changa', sans-serif;
+    font-size: 1.5vw;
+    width: 80%;
+    text-align: center;
+    margin: 1.5vw auto 1.5vw auto;
+}
+
+
+
 .bannerSections{
+    font-family: 'Quantico', sans-serif;
     color: white;
     border-bottom: 1.5vw black double;
     text-align: center;
-    height: 3vw;
     background-color: #1e008a;
-    font-size: 2vw;
+    font-size: 2.5vw;
     padding: 2vw;
-    margin: auto;
+    width: 100%;
+    margin: 0 -2vw;
+    text-shadow: 0vw 0.25vw 0.3vw black;
 }
 
 .Title{
@@ -51,3 +71,39 @@
 .indent{
     padding-left: 40px;
 }
+
+.circlePackTitle{
+    width: 100%;
+    padding: 2vw;
+    margin: 0vw -2vw;
+    background-color: #1e008a;
+    border-bottom: 1vw double #0f1247;
+    color: white;
+    font-size: 1.2vw;
+    text-align: center;
+    font-family: 'Quantico', sans-serif;
+}
+
+.circlePackPill{
+    width: 30%;
+    display: block;
+    border-radius: 10%;
+    background-color: #0f1247;
+    overflow: hidden;
+    border: #0f1247 0.3vw solid;
+    color: white;
+    font-family: 'Changa', sans-serif;
+/*.style("width", "30%")*/
+/*.style("display", "block")*/
+/*.style("border-radius", "10%")*/
+/*.style("background-color", "#0f1247")*/
+/*.style("overflow", "hidden")*/
+/*.style("border", "solid 0.3vw #0f1247")*/
+/*.style("margin","1vw auto 5vw auto")*/
+}
+
+
+
+
+
+
