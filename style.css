@@ -93,13 +93,25 @@ body{
     border: #0f1247 0.3vw solid;
     color: white;
     font-family: 'Changa', sans-serif;
-/*.style("width", "30%")*/
-/*.style("display", "block")*/
-/*.style("border-radius", "10%")*/
-/*.style("background-color", "#0f1247")*/
-/*.style("overflow", "hidden")*/
-/*.style("border", "solid 0.3vw #0f1247")*/
-/*.style("margin","1vw auto 5vw auto")*/
+}
+
+.blockTitle{
+    font-size: 2.4vw;
+    text-align: center;
+    font-family: 'Quantico', sans-serif;
+    display: block;
+    margin: 1vw auto 2vw auto;
+    text-decoration: underline;
+}
+
+.descBlock{
+    width: 60%;
+    display: block;
+    margin: 2vw auto 2vw auto;
+    color: white;
+    font-family: 'Changa', sans-serif;
+    font-size: 1.6vw;
+    padding: 2vw;
 }
 
 

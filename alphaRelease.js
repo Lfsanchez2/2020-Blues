@@ -766,39 +766,6 @@ d3.select("body")
 // Reference for Force Cluster Graph
 // https://bl.ocks.org/d3indepth/9d9f03a0016bc9df0f13b0d52978c02f
 
-// let selectionDiv = d3.select("body")
-//     .append("div")
-//     .attr("id", "choices_container")
-//     .style("width", "80vw")
-//     .style("margin", "0.5vw auto 0.5vw auto")
-//     .style("padding", "1vw")
-//
-// let choices = [
-//     {name: "Volume", index: 0},
-//     {name: "Physical Album Sales", index: 1},
-//     {name: "Digital Album Sales", index: 2},
-//     {name: "Digital Song Sales", index: 3},
-//     {name: "Total On-Demand Streams", index: 4},
-//     {name: "On-Demand Audio Streams", index: 5},
-//     {name: "On-Demand Video Streams", index: 6}];
-//
-// let dropDown = d3.select("#choices_container")
-//     .append("select")
-//     .attr("class", "selection")
-//     .style("font-size", "1.5vw")
-//     .style("padding", "0.8vw")
-//     .attr("name", "Chart-Type")
-// let options = dropDown.selectAll("option")
-//     .data(choices)
-//     .enter()
-//     .append("option");
-// options.text(function (d){
-//     return d.name;
-// })
-//     .attr("value", function (d){
-//         return d.index;
-//     })
-
 let volumeCirclePack = d3.select("body")
     .append("div")
     .attr("id", "circlepacks")
@@ -1132,33 +1099,211 @@ d3.csv("total_volume_share.csv").then(function (data2){
     makeForces(videoStreamsSVG, volumeObjects2019[6], videoStreamsGroup2, videoStreamsGroup1,180)
 })
 
-d3.select(".selection").on("change", function (d){
-    let selection = d3.select(this).property("value")
-    d3.select(".curr_chart").remove()
-    volumeSVG = volumeCirclePack.append("svg")
-        .attr("class", "curr_chart")
-        .attr("preserveAspectRatio", "xMinYMin meet")
-        .attr("viewBox", "0,0,600,330")
-        .style("display", "block")
-        .style("background-color", "#03063b")
-    volumeSVG.append("g")
-        .attr("class", "legendOrdinal")
-        .attr("transform", "translate(15,10)")
-        .attr("font-size", "9px")
-        .style("fill", "white")
-    let yearScale2 = d3.scaleOrdinal()
-        .domain(["2019", "2020"])
-        .range(["#ff5e00","#0059de"])
-    let legend2 = d3.legendColor()
-        .shapeWidth(30)
-        .scale(yearScale2)
-    volumeSVG.select(".legendOrdinal")
-        .call(legend2)
-    let bubbleGroup = volumeSVG.append("g")
-    let bubbleGroup2 = volumeSVG.append("g")
-    makeForces(volumeObjects2020[selection], bubbleGroup, bubbleGroup2, 420)
-    makeForces(volumeObjects2019[selection], bubbleGroup2, bubbleGroup,180)
-})
+d3.select("body")
+    .append("div")
+    .attr("class", "bannerSections")
+    .html("IMPACTS OF STREAMING/STREAMING EVENTS ON<br> " +
+        "MUSIC AND ARTIST POPULARITY IN 2020")
+
+d3.select("body")
+    .append("div")
+    .attr("id", "VerzuzBlock")
+    .attr("class", "descBlock")
+d3.select("#VerzuzBlock")
+    .append("text")
+    .attr("class", "blockTitle")
+    .text("What Is Verzuz?")
+d3.select("#VerzuzBlock")
+    .append("text")
+    .html("Verzuz is a special rap battle series started by Swizz Beats and Timbaland.  It's very "+
+    "reminiscent of early Hip-Hop DJ battles, except brought to the more modern platform of livestreaming"+
+        " through Instagram Live.  In Verzuz, two prominent producers, singers, or songwriters compete by performing" +
+        " their respective catalogs for 20 rounds while the audience is in charge of the scoring.  For a breakdown" +
+        "of all the Verzuz battles, read this Vulture article " +
+        "<a href='https://www.vulture.com/2021/04/verzuz-instagram-live-battles-ranked.html' target='_blank'>here</a>.")
+let raceMargins = {left: 120, right: 120, top: 55, bottom: 55};
+let raceDiv = d3.select("body")
+    .append("div")
+    .style("width", "90%")
+    .style("display", "block")
+    .style("background-color", "#1e008a")
+    .style("border-radius", "10%")
+    .style("overflow", "hidden")
+    .style("margin", "2vw auto 4vw auto")
+let raceTitle = raceDiv.append("div")
+    .attr("class", "circlePackTitle")
+    .style("border-bottom", "1vw black double")
+    .style("font-size", "2.5vw")
+    .style("margin-bottom","0")
+    .html("Top 4: Combined Catalog Consumption Gains<br>of Verzuz Participants<br>");
+raceTitle.append("text")
+    .style("font-size", "1.5vw")
+    .text("*Growth compared to their catalog consumption 2 days before their Verzuz battle")
+let raceWidth = 900;
+let raceHeight = 400;
+let raceSVG = raceDiv.append("svg")
+    .attr("preserveAspectRatio", "xMinYMin meet")
+    .attr("viewBox", "0,0,900,500")
+    .style("display", "block")
+    .style("margin", "0.5vw auto 3vw auto")
+let raceGroup = raceSVG.append("g")
+    .attr("transform", "translate("+raceMargins.left+","+100+")")
+let raceGraphWidth = raceWidth - raceMargins.left - raceMargins.right;
+let raceGraphHeight = raceHeight - raceMargins.top - raceMargins.bottom;
+let raceXScale = d3.scaleLinear()
+    .domain([0, 260])
+    .range([0, raceGraphWidth])
+let raceYScale = d3.scaleBand().padding(0.2)
+    .domain(["#1","#2","#3","#4"])
+    .range([0, raceGraphHeight])
+let colors = [colorbrewer.Set3["12"][3], colorbrewer.Set3["12"][4],
+    colorbrewer.Set3["12"][5], colorbrewer.Set3["12"][6]]
+let increaseData = [
+    {battle: "BabyFace Vs. Teddy Riley",
+     increase: 90,
+     color: colors[0]},
+    {battle: "Beenie Man Vs. Bounty Killer",
+     increase: 216,
+     color: colors[1]},
+    {battle: "Brandy Vs. Monica",
+     increase: 248,
+     color: colors[2]},
+    {battle: "Erykah Badu Vs. Jill Scott",
+     increase: 217,
+     color: colors[3]}]
+let rectangle1 = raceGroup.append("rect")
+    .attr("fill", increaseData[0].color)
+    .attr("x", raceXScale(0))
+    .attr("y", raceYScale("#4"))
+    .attr("width", 0)
+    .attr("height", raceYScale.bandwidth())
+let rectangle2 = raceGroup.append("rect")
+    .attr("fill", increaseData[1].color)
+    .attr("x", raceXScale(0))
+    .attr("y", raceYScale("#3"))
+    .attr("width", 0)
+    .attr("height", raceYScale.bandwidth())
+let rectangle3 = raceGroup.append("rect")
+    .attr("fill", increaseData[2].color)
+    .attr("x", raceXScale(0))
+    .attr("y", raceYScale("#1"))
+    .attr("width", 0)
+    .attr("height", raceYScale.bandwidth())
+let rectangle4 = raceGroup.append("rect")
+    .attr("fill", increaseData[3].color)
+    .attr("x", raceXScale(0))
+    .attr("y", raceYScale("#2"))
+    .attr("width", 0)
+    .attr("height", raceYScale.bandwidth())
+rectangle1.transition()
+    .delay(500)
+    .duration(1800)
+    .ease(d3.easeLinear)
+    .attr("width", raceXScale(increaseData[0].increase))
+rectangle2.transition()
+    .delay(500)
+    .duration(4320)
+    .ease(d3.easeLinear)
+    .attr("width", raceXScale(increaseData[1].increase))
+rectangle3.transition()
+    .delay(500)
+    .duration(4960)
+    .ease(d3.easeLinear)
+    .attr("width", raceXScale(increaseData[2].increase))
+rectangle4.transition()
+    .delay(500)
+    .duration(4340)
+    .ease(d3.easeLinear)
+    .attr("width", raceXScale(increaseData[3].increase))
+let percentage1 = raceGroup.append("text")
+    .style("opacity", "0")
+    .style("font-family", "'Changa', sans-serif")
+    .style("font-size", 20)
+    .style("text-shadow", "0 1.5px 5px black")
+    .attr("fill", "white")
+    .attr("text-anchor", "end")
+    .attr("x", raceXScale(increaseData[2].increase - 6))
+    .attr("y", raceYScale("#1") + (raceYScale.bandwidth()/2) + 5)
+    .text(increaseData[2].increase + "% Increase")
+percentage1.transition()
+    .delay(5560)
+    .duration(500)
+    .style("opacity", "1")
+let percentage2 = raceGroup.append("text")
+    .style("opacity", "0")
+    .style("font-family", "'Changa', sans-serif")
+    .style("font-size", 20)
+    .style("text-shadow", "0 1.5px 5px black")
+    .attr("fill", "white")
+    .attr("text-anchor", "end")
+    .attr("x", raceXScale(increaseData[3].increase - 6))
+    .attr("y", raceYScale("#2") + (raceYScale.bandwidth()/2)+5)
+    .text(increaseData[3].increase + "% Increase")
+percentage2.transition()
+    .delay(4940)
+    .duration(500)
+    .style("opacity", "1")
+let percentage3 = raceGroup.append("text")
+    .style("opacity", "0")
+    .style("font-family", "'Changa', sans-serif")
+    .style("font-size", 20)
+    .style("text-shadow", "0 1.5px 5px black")
+    .attr("fill", "white")
+    .attr("text-anchor", "end")
+    .attr("x", raceXScale(increaseData[1].increase - 6))
+    .attr("y", raceYScale("#3") + (raceYScale.bandwidth()/2)+5)
+    .text(increaseData[1].increase + "% Increase")
+percentage3.transition()
+    .delay(4920)
+    .duration(500)
+    .style("opacity", "1")
+let percentage4 = raceGroup.append("text")
+    .style("opacity", "0")
+    .style("font-family", "'Changa', sans-serif")
+    .style("font-size", 20)
+    .style("text-shadow", "0 1.5px 5px black")
+    .attr("fill", "white")
+    .attr("text-anchor", "end")
+    .attr("x", raceXScale(increaseData[0].increase - 6))
+    .attr("y", raceYScale("#4") + (raceYScale.bandwidth()/2)+5)
+    .text(increaseData[0].increase + "% Increase")
+percentage4.transition()
+    .delay(2400)
+    .duration(500)
+    .style("opacity", "1")
+let raceYAxis = raceGroup.append("g")
+    .attr("stroke-width", "3px")
+    .style("font-family", "'Changa', sans-serif")
+    .style("font-size", 18)
+    .call(d3.axisLeft(raceYScale))
+let raceXAxis = raceGroup.append("g")
+    .attr("stroke-width", "3px")
+    .style("font-family", "'Changa', sans-serif")
+    .style("font-size", 16)
+    .call(d3.axisBottom(raceXScale))
+    .attr("transform", "translate(0,"+raceGraphHeight+")")
+raceXAxis.append("text")
+    .attr("y", 48)
+    .attr("x", raceGraphWidth/2)
+    .attr("fill", "white")
+    .attr("text-anchor", "middle")
+    .text("Percent Increase in Consumption")
+let colorScale = d3.scaleOrdinal()
+    .domain([increaseData[0].battle, increaseData[1].battle,
+    increaseData[2].battle, increaseData[3].battle])
+    .range([colors[0], colors[1], colors[2], colors[3]]);
+raceSVG.append("g")
+    .attr("fill", "white")
+    .style("font-size", "12px")
+    .attr("class", "legendColor")
+    .attr("transform", "translate(50,20)");
+let colorLegend = d3.legendColor()
+    .shapeWidth(200)
+    .cells(4)
+    .orient('horizontal')
+    .scale(colorScale);
+raceSVG.select(".legendColor")
+    .call(colorLegend);
 
 d3.select("body")
     .append("div")
@@ -1300,8 +1445,6 @@ function drawBubbles(obj, index, xPos){
         .style("font-size", "18px")
         .text("\""+obj[index].song+"\"")
     songTitles.push(bubbleTitle)
-
-
 }
 
 
