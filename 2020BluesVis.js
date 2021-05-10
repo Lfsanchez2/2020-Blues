@@ -5,8 +5,8 @@ const width = 700, height = 500;
 d3.select("body")
     .append("div")
     .attr("class", "datasource")
-    .html("2020 Data Sourced from:&nbsp;<a href ='https://www.musicbusinessworldwide.com/files/2021/01/MRC_Billboard_YEAR_END_2020_US-Final.pdf' target = '_blank'>Pages 46-51 of MRC Data's 2020 Billboard Year-End Review</a>"+
-    "<br>2019 Data Sourced from:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='https://static.billboard.com/files/pdfs/NIELSEN_2019_YEARENDreportUS.pdf' target = '_blank'>Pages 29-33 of Nielsen's 2019 Billboard Year-End Review</a>")
+    .html("2020 Data Sourced from:&nbsp;&nbsp;<a href ='https://www.musicbusinessworldwide.com/files/2021/01/MRC_Billboard_YEAR_END_2020_US-Final.pdf' target = '_blank'>Pages 46-51 of MRC Data's 2020 Billboard Year-End Review</a>"+
+    "<br>2019 Data Sourced from:&nbsp;&nbsp;<a href='https://static.billboard.com/files/pdfs/NIELSEN_2019_YEARENDreportUS.pdf' target = '_blank'>Pages 29-33 of Nielsen's 2019 Billboard Year-End Review</a>")
 
 let barDiv1 = d3.select("body")
     .append("div")
@@ -58,15 +58,6 @@ barDiv1.append("div")
     .style("border-radius", "10%")
     .style("background-color", "#0f1247")
     .style("margin", "0.5vw 2.5vw 2.5vw auto");
-
-// barDiv1.append("div")
-//     .attr("id", "subCharts")
-//     .style("width", "30vw")
-//     .style("height", "40vw")
-//     .style("overflow", "auto")
-//     .style("border", "0.3vw white solid")
-//     .style("background-color", "#03063b")
-//     .style("margin", "auto")
 
 let albumsSVG = d3.select("#physicalalbums")
     .append("svg")
@@ -610,14 +601,15 @@ Promise.all([
         .text("Stream Count")
 })
 
+const width2 = 300, height2 = 250
 function makeDivergingChart(group, dataset){
-    let graphHeight2 = 110,
-        graphWidth2 = 180
+    let graphWidth2 = width2 - 60;
+    let graphHeight2 = height2 - 80;
     let xScale2 = d3.scaleBand().range([0, graphWidth2]).padding(0.3)
     let yScale2 = d3.scaleLinear().range([graphHeight2, 0])
 
     xScale2.domain(["2018-2019","2019-2020"])
-    yScale2.domain([-35, 35])
+    yScale2.domain([-52, 52])
     let bars = group.append("g")
         .selectAll("g")
         .data(dataset)
@@ -640,7 +632,6 @@ function makeDivergingChart(group, dataset){
         .attr("fill", function(d){
             return divergeScale(d.percentDiff)
         })
-
     bars.append("text")
         .attr("y",  function(d) {
             if (d.percentDiff > 0) {
@@ -652,17 +643,27 @@ function makeDivergingChart(group, dataset){
         })
         .attr("x", function (d){ return xScale2(d.group) + (xScale2.bandwidth()/2) })
         .attr("fill", "white")
-        .attr("font-size", "8px")
+        .attr("font-size", "12px")
         .attr("text-anchor", "middle")
+        .style("font-family","'Changa', sans-serif")
         .text(function (d){ return d.percentDiff + "%" })
-
     group.append("g")
+        .style("font-family","'Changa', sans-serif")
+        .attr("font-size", "22px")
         .call(d3.axisBottom(xScale2))
         .attr("transform", "translate(0,"+graphHeight2+")");
-
-    group.append("g")
+    let dYAxis = group.append("g")
+        .style("font-family","'Changa', sans-serif")
+        .attr("font-size", "22px")
         .call(d3.axisLeft(yScale2).ticks(4))
-
+    dYAxis.append("text")
+        .style("font-family","'Changa', sans-serif")
+        .attr("fill", "white")
+        .attr("text-anchor", "middle")
+        .attr("font-size", "13")
+        .attr("y", graphHeight2/2)
+        .attr("transform", "translate("+(-125)+", "+graphHeight2/2+")rotate(-90)")
+        .text("Percent Difference")
     group.append("line")
         .style("stroke", "white")
         .attr("x1", 0)
@@ -670,8 +671,6 @@ function makeDivergingChart(group, dataset){
         .attr("x2", graphWidth2)
         .attr("y2", yScale2(0));
 }
-
-const width2 = 300, height2 = 200
 
 let totalUSAlbumSales = [
     {group: "2018-2019",
@@ -683,7 +682,46 @@ let totalUSAlbumSales = [
         secondSale: 102400000,
         percentDiff: -9.2}
 ]
-
+let USPhysAlbumSales = [
+    {group: "2018-2019",
+        firstSale: 86400000,
+        secondSale: 73500000,
+        percentDiff: -15},
+    {group: "2019-2020",
+        firstSale: 73500000,
+        secondSale: 68000000,
+        percentDiff: -7.4}
+]
+let USDigiAlbumSales = [
+    {group: "2018-2019",
+        firstSale: 52300000,
+        secondSale: 39300000,
+        percentDiff: -23.5},
+    {group: "2019-2020",
+        firstSale: 39300000,
+        secondSale: 34400000,
+        percentDiff: -12.5}
+]
+let vinylAlbumSales = [
+    {group: "2018-2019",
+     firstSale: 16500000,
+     secondSale: 18800000,
+     percentDiff: 14.5},
+    {group: "2019-2020",
+     firstSale: 18800000,
+     secondSale: 27500000,
+     percentDiff: 46.2}
+]
+let digitalSongSales = [
+    {group: "2018-2019",
+     firstSale: 401400000,
+     secondSale: 301100000,
+     percentDiff: -25},
+    {group: "2019-2020",
+     firstSale: 301100000,
+     secondSale: 233800000,
+     percentDiff: -22.3}
+]
 let totalUSAudioStreams = [
     {group: "2018-2019",
         firstSale: 602300000000,
@@ -696,68 +734,219 @@ let totalUSAudioStreams = [
 ]
 
 
-// let divergeScale = d3.scaleDiverging()
-//     .interpolator(d3.interpolatePRGn)
-//     .domain([-24, 0, 24])
-//
-// let svg2 = d3.select("#subCharts")
-//     .append("svg")
-//     .attr("preserveAspectRatio", "xMinYMin meet")
-//     .attr("viewBox", "0,0,300,200")
-//
-// svg2.append("text")
-//     .attr("x", width2/2)
-//     .attr("y", 35)
-//     .attr("text-anchor", "middle")
-//     .attr("font-size", "12px")
-//     .attr("fill", "white")
-//     .text("Percentage Change of Total Album Sales")
-//
-// let svg3 = d3.select("#subCharts")
-//     .append("svg")
-//     .attr("preserveAspectRatio", "xMinYMin meet")
-//     .attr("viewBox", "0,0,300,200")
-//
-// svg3.append("text")
-//     .attr("x", width2/2)
-//     .attr("y", 35)
-//     .attr("text-anchor", "middle")
-//     .attr("font-size", "12px")
-//     .attr("fill", "white")
-//     .text("Percentage Change of Audio Streams")
-//
-// let g2 = svg2.append("g")
-//     .attr("transform", "translate(42, 70)")
-//
-// let g3 = svg3.append("g")
-//     .attr("transform", "translate(42, 70)")
-//
-//
-// let legendD = d3.legendColor()
-//     .cells(5)
-//     .scale(divergeScale)
-// svg2.append("g")
-//     .attr("class", "legendOrdinal")
-//     .attr("transform", "translate(240,90)")
-//     .attr("font-size", "9px")
-//     .style("fill", "white")
-// svg2.select(".legendOrdinal")
-//     .call(legendD)
-// svg3.append("g")
-//     .attr("class", "legendOrdinal")
-//     .attr("transform", "translate(240,90)")
-//     .attr("font-size", "8px")
-//     .style("fill", "white")
-// svg3.select(".legendOrdinal")
-//     .call(legendD)
-// makeDivergingChart(g2, totalUSAlbumSales)
-// makeDivergingChart(g3, totalUSAudioStreams)
-
-
-
 d3.select("body")
     .append("div")
-    .attr("class", "bannerSections")
+    .attr("class", "bannerSections otherSection")
+    .html("COMPARING PERCENT DIFFERENCE IN SALES AND STREAMING <br> FIGURES FROM " +
+        "(2018-2019) and (2019-2020)")
+d3.select("body")
+    .append("div")
+    .attr("class", "datasource")
+    .html("2020 Data Sourced from:&nbsp;&nbsp;<a href ='https://www.musicbusinessworldwide.com/files/2021/01/MRC_Billboard_YEAR_END_2020_US-Final.pdf' target = '_blank'>Page 8 of MRC Data's 2020 Billboard Year-End Review</a>"+
+        "<br>2019 Data Sourced from:&nbsp;&nbsp;<a href='https://static.billboard.com/files/pdfs/NIELSEN_2019_YEARENDreportUS.pdf' target = '_blank'>Pages 4-5 of Nielsen's 2019 Billboard Year-End Review</a>")
+
+let divergeDiv = d3.select("body")
+    .append("div")
+    .style("width", "90%")
+    .style("display", "flex")
+    .style("flex-wrap", "wrap")
+    .style("align-items", "center")
+    .style("justify-items", "center")
+    .style("justify-content", "space-evenly")
+    .style("border-radius", "10%")
+    .style("background-color","#1e008a")
+    .style("margin", "2vw auto 2vw auto")
+let physDiverge = divergeDiv.append("div")
+    .style("display", "block")
+    .style("width", "31%")
+    .style("border-radius", "10%")
+    .style("background-color", "#0f1247")
+    .style("margin", "3vw 0.3vw 0.6vw auto")
+let digiDiverge = divergeDiv.append("div")
+    .style("display", "block")
+    .style("width", "31%")
+    .style("border-radius", "10%")
+    .style("background-color", "#0f1247")
+    .style("margin", "3vw 0.3vw 0.6vw 0.3vw")
+let totalDiverge = divergeDiv.append("div")
+    .style("display", "block")
+    .style("width", "31%")
+    .style("border-radius", "10%")
+    .style("background-color", "#0f1247")
+    .style("margin", "3vw auto 0.6vw 0.3vw")
+let vinylDiverge = divergeDiv.append("div")
+    .style("display", "block")
+    .style("width", "31%")
+    .style("border-radius", "10%")
+    .style("background-color", "#0f1247")
+    .style("margin", "0.6vw 0.3vw 3vw auto")
+let digitalSongDiverge = divergeDiv.append("div")
+    .style("display", "block")
+    .style("width", "31%")
+    .style("border-radius", "10%")
+    .style("background-color", "#0f1247")
+    .style("margin", "0.6vw 0.3vw 3vw 0.3vw")
+let audioStreamDiverge = divergeDiv.append("div")
+    .style("display", "block")
+    .style("width", "31%")
+    .style("border-radius", "10%")
+    .style("background-color", "#0f1247")
+    .style("margin", "0.6vw auto 3vw 0.3vw")
+let physDSVG = physDiverge.append("svg")
+    .style("display", "block")
+    .style("margin", "2vw")
+    .attr("preserveAspectRatio", "xMinYMin meet")
+    .attr("viewBox", "0,0,300,300")
+let digiDSVG = digiDiverge.append("svg")
+    .style("display", "block")
+    .style("margin", "2vw")
+    .attr("preserveAspectRatio", "xMinYMin meet")
+    .attr("viewBox", "0,0,300,300")
+let totalDSVG = totalDiverge.append("svg")
+    .style("display", "block")
+    .style("margin", "2vw")
+    .attr("preserveAspectRatio", "xMinYMin meet")
+    .attr("viewBox", "0,0,300,300");
+let vinylDSVG = vinylDiverge.append("svg")
+    .style("display", "block")
+    .style("margin", "2vw")
+    .attr("preserveAspectRatio", "xMinYMin meet")
+    .attr("viewBox", "0,0,300,300");
+let digiSongDSVG = digitalSongDiverge.append("svg")
+    .style("display", "block")
+    .style("margin", "2vw")
+    .attr("preserveAspectRatio", "xMinYMin meet")
+    .attr("viewBox", "0,0,300,300");
+let audioDSVG = audioStreamDiverge.append("svg")
+    .style("display", "block")
+    .style("margin", "2vw")
+    .attr("preserveAspectRatio", "xMinYMin meet")
+    .attr("viewBox", "0,0,300,300");
+let divergeScale = d3.scaleDiverging()
+    .interpolator(d3.interpolateRdBu)
+    .domain([52, 0, -52])
+let physDGroup = physDSVG.append("g")
+    .attr("transform", "translate(48, 90)")
+let digiDGroup = digiDSVG.append("g")
+    .attr("transform", "translate(48, 90)")
+let totalDGroup = totalDSVG.append("g")
+    .attr("transform", "translate(48, 90)")
+let vinylDGroup = vinylDSVG.append("g")
+    .attr("transform", "translate(48, 90)")
+let digiSongDGroup = digiSongDSVG.append("g")
+    .attr("transform", "translate(48, 90)")
+let audioDGroup = audioDSVG.append("g")
+    .attr("transform", "translate(48, 90)")
+physDSVG.append("text")
+    .attr("x", 150)
+    .attr("y", 15)
+    .attr("text-anchor", "middle")
+    .attr("fill", "white")
+    .attr("font-size", "12px")
+    .style("font-family", "'Quantico', sans-serif")
+    .text("Percent Change In Physical Album Sales")
+digiDSVG.append("text")
+    .attr("x", 150)
+    .attr("y", 15)
+    .attr("text-anchor", "middle")
+    .attr("fill", "white")
+    .attr("font-size", "12px")
+    .style("font-family", "'Quantico', sans-serif")
+    .text("Percent Change In Digital Album Sales")
+totalDSVG.append("text")
+    .attr("x", 150)
+    .attr("y", 15)
+    .attr("text-anchor", "middle")
+    .attr("fill", "white")
+    .attr("font-size", "12px")
+    .style("font-family", "'Quantico', sans-serif")
+    .text("Percent Change In Total Album Sales")
+vinylDSVG.append("text")
+    .attr("x", 150)
+    .attr("y", 15)
+    .attr("text-anchor", "middle")
+    .attr("fill", "white")
+    .attr("font-size", "12px")
+    .style("font-family", "'Quantico', sans-serif")
+    .text("Percent Change In Vinyl LP Sales")
+digiSongDSVG.append("text")
+    .attr("x", 150)
+    .attr("y", 15)
+    .attr("text-anchor", "middle")
+    .attr("fill", "white")
+    .attr("font-size", "12px")
+    .style("font-family", "'Quantico', sans-serif")
+    .text("Percent Change In Digital Song Sales")
+audioDSVG.append("text")
+    .attr("x", 150)
+    .attr("y", 15)
+    .attr("text-anchor", "middle")
+    .attr("fill", "white")
+    .attr("font-size", "12px")
+    .style("font-family", "'Quantico', sans-serif")
+    .text("Percent Change In Audio Streaming")
+makeDivergingChart(physDGroup, USPhysAlbumSales)
+makeDivergingChart(digiDGroup, USDigiAlbumSales)
+makeDivergingChart(totalDGroup, totalUSAlbumSales)
+makeDivergingChart(vinylDGroup, vinylAlbumSales)
+makeDivergingChart(digiSongDGroup, digitalSongSales)
+makeDivergingChart(audioDGroup, totalUSAudioStreams)
+physDSVG.append("g")
+    .attr("fill", "white")
+    .style("font-size", "10px")
+    .style("font-family", "'Changa', sans-serif")
+    .attr("class", "legendDiverge")
+    .attr("transform", "translate(22,28)");
+digiDSVG.append("g")
+    .attr("fill", "white")
+    .style("font-size", "10px")
+    .style("font-family", "'Changa', sans-serif")
+    .attr("class", "legendDiverge")
+    .attr("transform", "translate(22,28)");
+totalDSVG.append("g")
+    .attr("fill", "white")
+    .style("font-size", "10px")
+    .style("font-family", "'Changa', sans-serif")
+    .attr("class", "legendDiverge")
+    .attr("transform", "translate(22,28)");
+vinylDSVG.append("g")
+    .attr("fill", "white")
+    .style("font-size", "10px")
+    .style("font-family", "'Changa', sans-serif")
+    .attr("class", "legendDiverge")
+    .attr("transform", "translate(22,28)");
+digiSongDSVG.append("g")
+    .attr("fill", "white")
+    .style("font-size", "10px")
+    .style("font-family", "'Changa', sans-serif")
+    .attr("class", "legendDiverge")
+    .attr("transform", "translate(22,28)");
+audioDSVG.append("g")
+    .attr("fill", "white")
+    .style("font-size", "10px")
+    .style("font-family", "'Changa', sans-serif")
+    .attr("class", "legendDiverge")
+    .attr("transform", "translate(22,28)");
+let divergeLegend = d3.legendColor()
+    .shapeWidth(35)
+    .cells(7)
+    .orient('horizontal')
+    .scale(divergeScale);
+physDSVG.select(".legendDiverge")
+    .call(divergeLegend);
+digiDSVG.select(".legendDiverge")
+    .call(divergeLegend);
+totalDSVG.select(".legendDiverge")
+    .call(divergeLegend);
+vinylDSVG.select(".legendDiverge")
+    .call(divergeLegend);
+digiSongDSVG.select(".legendDiverge")
+    .call(divergeLegend);
+audioDSVG.select(".legendDiverge")
+    .call(divergeLegend);
+d3.select("body")
+    .append("div")
+    .attr("class", "bannerSections otherSection")
     .html("SHARE OF TOTAL VOLUME BY FORMAT & TOP 10 GENRE <br> FROM 2019 AND 2020")
 
 // Reference for responsiveness:
@@ -765,8 +954,14 @@ d3.select("body")
 
 // Reference for Force Cluster Graph
 // https://bl.ocks.org/d3indepth/9d9f03a0016bc9df0f13b0d52978c02f
+d3.select("body")
+    .append("div")
+    .attr("class", "datasource")
+    .html("2020 Data Sourced from:&nbsp;&nbsp;<a href ='https://www.musicbusinessworldwide.com/files/2021/01/MRC_Billboard_YEAR_END_2020_US-Final.pdf' target = '_blank'>Page 53 of MRC Data's 2020 Billboard Year-End Review</a>"+
+        "<br>2019 Data Sourced from:&nbsp;&nbsp;<a href='https://static.billboard.com/files/pdfs/NIELSEN_2019_YEARENDreportUS.pdf' target = '_blank'>Pages 35 of Nielsen's 2019 Billboard Year-End Review</a>")
 
-let volumeCirclePack = d3.select("body")
+
+d3.select("body")
     .append("div")
     .attr("id", "circlepacks")
     .style("border-radius", "10%")
@@ -1101,7 +1296,7 @@ d3.csv("total_volume_share.csv").then(function (data2){
 
 d3.select("body")
     .append("div")
-    .attr("class", "bannerSections")
+    .attr("class", "bannerSections otherSection")
     .html("IMPACTS OF STREAMING/STREAMING EVENTS ON<br> " +
         "MUSIC AND ARTIST POPULARITY IN 2020")
 
@@ -1121,6 +1316,11 @@ d3.select("#VerzuzBlock")
         " their respective catalogs for 20 rounds while the audience is in charge of the scoring.  For a breakdown" +
         "of all the Verzuz battles, read this Vulture article " +
         "<a href='https://www.vulture.com/2021/04/verzuz-instagram-live-battles-ranked.html' target='_blank'>here</a>.")
+
+d3.select("body")
+    .append("div")
+    .attr("class", "datasource")
+    .html("2020 Data Sourced from:&nbsp;&nbsp;<a href ='https://www.musicbusinessworldwide.com/files/2021/01/MRC_Billboard_YEAR_END_2020_US-Final.pdf' target = '_blank'>Page 21 of MRC Data's 2020 Billboard Year-End Review</a>")
 let raceMargins = {left: 120, right: 120, top: 55, bottom: 55};
 let raceDiv = d3.select("body")
     .append("div")
@@ -1195,83 +1395,87 @@ let rectangle4 = raceGroup.append("rect")
     .attr("y", raceYScale("#2"))
     .attr("width", 0)
     .attr("height", raceYScale.bandwidth())
-rectangle1.transition()
-    .delay(500)
-    .duration(1800)
-    .ease(d3.easeLinear)
-    .attr("width", raceXScale(increaseData[0].increase))
-rectangle2.transition()
-    .delay(500)
-    .duration(4320)
-    .ease(d3.easeLinear)
-    .attr("width", raceXScale(increaseData[1].increase))
-rectangle3.transition()
-    .delay(500)
-    .duration(4960)
-    .ease(d3.easeLinear)
-    .attr("width", raceXScale(increaseData[2].increase))
-rectangle4.transition()
-    .delay(500)
-    .duration(4340)
-    .ease(d3.easeLinear)
-    .attr("width", raceXScale(increaseData[3].increase))
-let percentage1 = raceGroup.append("text")
-    .style("opacity", "0")
-    .style("font-family", "'Changa', sans-serif")
-    .style("font-size", 20)
-    .style("text-shadow", "0 1.5px 5px black")
-    .attr("fill", "white")
-    .attr("text-anchor", "end")
-    .attr("x", raceXScale(increaseData[2].increase - 6))
-    .attr("y", raceYScale("#1") + (raceYScale.bandwidth()/2) + 5)
-    .text(increaseData[2].increase + "% Increase")
-percentage1.transition()
-    .delay(5560)
-    .duration(500)
-    .style("opacity", "1")
-let percentage2 = raceGroup.append("text")
-    .style("opacity", "0")
-    .style("font-family", "'Changa', sans-serif")
-    .style("font-size", 20)
-    .style("text-shadow", "0 1.5px 5px black")
-    .attr("fill", "white")
-    .attr("text-anchor", "end")
-    .attr("x", raceXScale(increaseData[3].increase - 6))
-    .attr("y", raceYScale("#2") + (raceYScale.bandwidth()/2)+5)
-    .text(increaseData[3].increase + "% Increase")
-percentage2.transition()
-    .delay(4940)
-    .duration(500)
-    .style("opacity", "1")
-let percentage3 = raceGroup.append("text")
-    .style("opacity", "0")
-    .style("font-family", "'Changa', sans-serif")
-    .style("font-size", 20)
-    .style("text-shadow", "0 1.5px 5px black")
-    .attr("fill", "white")
-    .attr("text-anchor", "end")
-    .attr("x", raceXScale(increaseData[1].increase - 6))
-    .attr("y", raceYScale("#3") + (raceYScale.bandwidth()/2)+5)
-    .text(increaseData[1].increase + "% Increase")
-percentage3.transition()
-    .delay(4920)
-    .duration(500)
-    .style("opacity", "1")
-let percentage4 = raceGroup.append("text")
-    .style("opacity", "0")
-    .style("font-family", "'Changa', sans-serif")
-    .style("font-size", 20)
-    .style("text-shadow", "0 1.5px 5px black")
-    .attr("fill", "white")
-    .attr("text-anchor", "end")
-    .attr("x", raceXScale(increaseData[0].increase - 6))
-    .attr("y", raceYScale("#4") + (raceYScale.bandwidth()/2)+5)
-    .text(increaseData[0].increase + "% Increase")
-percentage4.transition()
-    .delay(2400)
-    .duration(500)
-    .style("opacity", "1")
-let raceYAxis = raceGroup.append("g")
+
+function animateRace(){
+    rectangle1.transition()
+        .delay(500)
+        .duration(1800)
+        .ease(d3.easeLinear)
+        .attr("width", raceXScale(increaseData[0].increase))
+    rectangle2.transition()
+        .delay(500)
+        .duration(4320)
+        .ease(d3.easeLinear)
+        .attr("width", raceXScale(increaseData[1].increase))
+    rectangle3.transition()
+        .delay(500)
+        .duration(4960)
+        .ease(d3.easeLinear)
+        .attr("width", raceXScale(increaseData[2].increase))
+    rectangle4.transition()
+        .delay(500)
+        .duration(4340)
+        .ease(d3.easeLinear)
+        .attr("width", raceXScale(increaseData[3].increase))
+    let percentage1 = raceGroup.append("text")
+        .style("opacity", "0")
+        .style("font-family", "'Changa', sans-serif")
+        .style("font-size", 20)
+        .style("text-shadow", "0 1.5px 5px black")
+        .attr("fill", "white")
+        .attr("text-anchor", "end")
+        .attr("x", raceXScale(increaseData[2].increase - 6))
+        .attr("y", raceYScale("#1") + (raceYScale.bandwidth()/2) + 5)
+        .text(increaseData[2].increase + "% Increase")
+    percentage1.transition()
+        .delay(5560)
+        .duration(500)
+        .style("opacity", "1")
+    let percentage2 = raceGroup.append("text")
+        .style("opacity", "0")
+        .style("font-family", "'Changa', sans-serif")
+        .style("font-size", 20)
+        .style("text-shadow", "0 1.5px 5px black")
+        .attr("fill", "white")
+        .attr("text-anchor", "end")
+        .attr("x", raceXScale(increaseData[3].increase - 6))
+        .attr("y", raceYScale("#2") + (raceYScale.bandwidth()/2)+5)
+        .text(increaseData[3].increase + "% Increase")
+    percentage2.transition()
+        .delay(4940)
+        .duration(500)
+        .style("opacity", "1")
+    let percentage3 = raceGroup.append("text")
+        .style("opacity", "0")
+        .style("font-family", "'Changa', sans-serif")
+        .style("font-size", 20)
+        .style("text-shadow", "0 1.5px 5px black")
+        .attr("fill", "white")
+        .attr("text-anchor", "end")
+        .attr("x", raceXScale(increaseData[1].increase - 6))
+        .attr("y", raceYScale("#3") + (raceYScale.bandwidth()/2)+5)
+        .text(increaseData[1].increase + "% Increase")
+    percentage3.transition()
+        .delay(4920)
+        .duration(500)
+        .style("opacity", "1")
+    let percentage4 = raceGroup.append("text")
+        .style("opacity", "0")
+        .style("font-family", "'Changa', sans-serif")
+        .style("font-size", 20)
+        .style("text-shadow", "0 1.5px 5px black")
+        .attr("fill", "white")
+        .attr("text-anchor", "end")
+        .attr("x", raceXScale(increaseData[0].increase - 6))
+        .attr("y", raceYScale("#4") + (raceYScale.bandwidth()/2)+5)
+        .text(increaseData[0].increase + "% Increase")
+    percentage4.transition()
+        .delay(2400)
+        .duration(500)
+        .style("opacity", "1")
+}
+
+raceGroup.append("g")
     .attr("stroke-width", "3px")
     .style("font-family", "'Changa', sans-serif")
     .style("font-size", 18)
@@ -1291,9 +1495,10 @@ raceXAxis.append("text")
 let colorScale = d3.scaleOrdinal()
     .domain([increaseData[0].battle, increaseData[1].battle,
     increaseData[2].battle, increaseData[3].battle])
-    .range([colors[0], colors[1], colors[2], colors[3]]);
+    .range(colors);
 raceSVG.append("g")
     .attr("fill", "white")
+    .style("font-family", "'Changa', sans-serif")
     .style("font-size", "12px")
     .attr("class", "legendColor")
     .attr("transform", "translate(50,20)");
@@ -1304,10 +1509,37 @@ let colorLegend = d3.legendColor()
     .scale(colorScale);
 raceSVG.select(".legendColor")
     .call(colorLegend);
+let raceClicked = false;
+let raceButton = raceDiv.append("button")
+    .text("Click to Run Bart Chart Race")
+    .style("font-family","'Changa', sans-serif")
+    .style("font-size", "1vw")
+    .style("width", "20vw")
+    .style("height", "3.5vw")
+    .style("display", "block")
+    .style("margin", "0 auto 2.8vw auto")
+    .style("color", "white")
+    .style("background-color", "black")
+    .style("border", "0.4vw darkblue solid")
+    .on("click", function(){
+        if(!raceClicked) {
+            raceClicked = true
+            animateRace()
+            raceButton.style("opacity", "0.3")
+        }
+    })
+    .on("mouseover", function (){
+        if(!raceClicked)
+            raceButton.style("transform","scale(1.15)")
+    })
+    .on("mouseout", function (){
+        if(!raceClicked)
+            raceButton.style("transform", "scale(1)")
+    })
 
 d3.select("body")
     .append("div")
-    .attr("class", "bannerSections")
+    .attr("class", "bannerSections otherSection")
     .html("IMPACTS OF SOCIAL MOVEMENTS/EVENTS <br> ON MUSIC TRENDS IN 2020")
 
 let bubbleObjects = []
@@ -1318,6 +1550,10 @@ let images = []
 let circleXPos = []
 let clicked = false
 
+d3.select("body")
+    .append("div")
+    .attr("class", "datasource")
+    .html("2020 Data Sourced from:&nbsp;&nbsp;<a href ='https://www.musicbusinessworldwide.com/files/2021/01/MRC_Billboard_YEAR_END_2020_US-Final.pdf' target = '_blank'>Page 26 of MRC Data's 2020 Billboard Year-End Review</a>")
 let bubbleDiv = d3.select("body")
     .append("div")
     .style("width", "90%")
@@ -1389,7 +1625,7 @@ function animateBubbles(){
             .duration(7100)
             .attr("y", 320+(Math.sqrt(bubbleObjects[i].second / Math.PI)/4)+35)
     }
-    let annotations = d3.selectAll("#bubbleannotation")
+    d3.selectAll("#bubbleannotation")
         .transition()
         .delay(6350)
         .duration(2000)
@@ -1548,7 +1784,23 @@ d3.csv("soc_movement_growth.csv").then(function(data){
             if(!clicked)
                 aniButton.style("transform", "scale(1)")
         })
-    console.log(bubbles.length)
-    console.log(bubbleObjects.length)
-
 })
+
+d3.select("body")
+    .append("div")
+    .attr("id", "socMovBlock")
+    .attr("class", "descBlock BLM")
+d3.select("#socMovBlock")
+    .append("text")
+    .attr("class", "blockTitle")
+    .html("Why Is This Time Range Significant?")
+d3.select("#socMovBlock")
+    .append("text")
+    .attr("class", "socMoveDesc")
+    .html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The transition from the week of May 22nd, 2020 - May 27th, 2020 to May 28th, 2020 - June 6th, 2020 is important "+
+    "because this time range is shortly after the death of George Floyd (May 25th, 2020).  This event is arguably one of the most " +
+        "impactful and defining of 2020, as it led to widespread protests throughout the nation.  These songs in particular are very " +
+        "topical when considering the impact of this event, and it is no surprise that most of them saw booming growth following it.<br><br>" +
+        "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;It is worth noting that <em>none</em> of these songs were released in 2020, so being a new release is not a factor in their rise in " +
+        "popularity.  Instead, these songs have common themes of struggle, perseverance, and the injustices African Americans face in the US, which " +
+        "resonated deeply with the feelings of those in mourning and shock over the death of George Floyd and many others in the past.")

@@ -4,11 +4,17 @@
   <title>2020 Blues Main Page</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="stylesheet" href="style.css">
+  <style>
+      body{
+          background-color: black;
+          color: white;
+      }
+  </style>
   <body>
     <div class="banner">
-      Luis Sanchez - Data Visualization Final Project (Drafting)
+      Luis Sanchez - Data Visualization Final Project
     </div>
-    <h1 class="Title">2020 Blues</h1>
+    <h1 class="Title">2020 BLUES</h1>
     <div class="desc">
         This project is focused on the ways in which 2020 may have 
         impacted the music industry as a result of the COVID-19 pandemic.
@@ -27,7 +33,7 @@
         to analyze Billboard's 2019 and 2020 End-of-Year records and make inferences
         using the compiled data from these records to substantiate these claims. 
     </div>
-    <h1 class="Title">Alpha Release</h1>
+    <h1 class="Title otherTitle">ALPHA RELEASE</h1>
     <div class="desc">
         <ul>
             <li class="mainBullets"><b>Overview:</b> I'm focusing on music industry trends for this project.  I will be
@@ -35,18 +41,18 @@
                 Billboard end-of-year records.</li>
             <li class="mainBullets"><b>Completed Features (Not Including Interaction):</b>
                 <ul class="indent">
-                    <li><b>Bar Graph Group 1:</b> This group of bar graphs is meant to represent
+                    <li class="subBullets"><b>Bar Graph Group 1:</b> This group of bar graphs is meant to represent
                     sales/streaming trends between 2019 and 2020.  I'm looking to add a
                     couple more diverging graphs and maybe add an option button that lets
                     the user pick bar graphs that have different data for the bigger (main)
                     bar graph.</li>
-                    <li><b>Growing Bubble Race:</b> This visualization represents the top 5
+                    <li class="subBullets"><b>Growing Bubble Race:</b> This visualization represents the top 5
                     songs that experienced the most increase in daily audio streams from the week
                     of (May 22nd - May27th) to (May 28th - June 6th).  This is a notable time frame
                     because George Floyd's death occurred on May 25th.  With this and other visualizations
                     that I am still looking into, I want to see how social movements and events can and
                     have impacted the music industry, as 2020 was a very tumultuous year.</li>
-                    <li><b>"Cluster Chart": </b>I'm not sure if this is the right terminology, but this
+                    <li class="subBullets"><b>"Cluster Chart": </b>I'm not sure if this is the right terminology, but this
                     addition is meant to compare the "Share of Total Volume By Format and Genre for both
                     2019 and 2020.  Right now it's in it's very early stages, as it took me a long time to
                     find proper resources I could reference in order to understand how to make clusters
@@ -63,9 +69,52 @@
                 show.  I will also add citations that specify the pages where I gathered my data.
             </li>
         </ul>
-        <h1 class="pageLink">
-            Alpha in progress <a href = "alpha.html" target="_blank">here</a>.
-        </h1>
+
     </div>
+    <h1 class="Title otherTitle">BETA RELEASE</h1>
+    <div class="desc">
+        <ul>
+            <li class="mainBullets"><b>Main Changes:</b>
+                <ul class="indent">
+                    <li class="subBullets">Updated all visualizations to have responsive scaling.</li>
+                    <li class="subBullets">Updated Song Bubble Race to use stream count as circle area.</li>
+                    <li class="subBullets">Added hover interaction to Circle Pack Charts.</li>
+                    <li class="subBullets">Added scroll bar option to cycle between 7 different columns of Circle Pack Chart.</li>
+                </ul>
+            </li>
+            <li class="mainBullets"><b>Upcoming Changes:</b> The visualizations so far are mostly finished, but will change according to feedback.
+            There is still one more visualization to add - A Bar Chart Race focusing on the growth of artist popularity due to livestreaming events.
+            The general styling of the website also still needs to be implemented.</li>
+        </ul>
+    </div>
+    <h1 class="Title otherTitle">FINAL PRESENTATION RELEASE</h1>
+    <div class="desc">
+        <ul>
+            <li class="mainBullets"><b>Main Changes:</b>
+                <ul class="indent">
+                    <li class="subBullets">Cited sources with page numbers before each visualization.</li>
+                    <li class="subBullets">Implemented styling for entire website.</li>
+                    <li class="subBullets">Bar Charts concerning variation in album sales and stream counts between 2019 and 2020 have been
+                        remodeled into small multiples format for a total of 6 different bar charts.</li>
+                    <li class="subBullets">Diverging Bar Charts concerning percent variation in album sales and stream counts between 2018-2019 and
+                    2019-2020 have been expanded into small multiples format for a total of 6 different diverging bar charts.</li>
+                    <li class="subBullets">Due to given feedback, Circle Pack Charts have been expanded into small multiples for a total of 7 circle
+                    pack charts instead of utilizing a scrollbar.</li>
+                    <li class="subBullets">Circle Pack Charts interaction changed to support d3.annotations.</li>
+                    <li class="subBullets">Bar Chart Race visualization added to show how livestreaming events have helped certain artists grow in 2020.
+                    </li>
+                    <li class="subBullets">Song Bubble Race has been updated with d3.annotations at end of animation, title and some data has also been
+                    updated to match the source.</li>
+                </ul>
+            </li>
+            <li class="mainBullets"><b>Upcoming Changes:</b> For the most part everything has been completed.  In this coming week I will try to add a more
+            contextual description for the Song Bubble Race, time abiding.  I considered adding annotations and/or tooltips for the small multiple bar charts,
+            but thought it might be too much visual clutter.  Lastly, I will try to add some small analytical descriptions of key points to take away from
+            the visualizations.</li>
+        </ul>
+    </div>
+    <h1 class="pageLink">
+        Presentation Build: <a href = "2020Blues.html" target="_blank"> HERE</a>.
+    </h1>
   </body>
 </html> 

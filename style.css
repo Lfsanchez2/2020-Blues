@@ -10,11 +10,11 @@ body{
     left: 0;
     top: 0;
     color: white;
-    border-bottom: 1vw white double;
+    border-bottom: 1vw black double;
     display: flex;
     text-align: left;
     width: 110%;
-    height: 3vw;
+    height: 2.5vw;
     background-color: #1e008a;
     font-size: 2vw;
     padding: 2vw;
@@ -44,32 +44,56 @@ body{
     text-shadow: 0vw 0.25vw 0.3vw black;
 }
 
+.otherSection{
+    margin: 4vw -2vw 4vw -2vw;
+}
+
 .Title{
+    font-family: 'Quantico', sans-serif;
     margin-top: 10vw;
-    margin-bottom: 1vw;
-    color: black;
-    font-size: 5.5vw;
+    margin-bottom: 0.5vw;
+    font-size: 4.7vw;
     text-align: center;
+    text-decoration: underline;
+}
+
+.otherTitle{
+    margin: 2.5vw auto 2.5vw auto;
 }
 
 .desc{
-    margin: 2vw auto 2vw auto;
+    font-family: 'Changa', sans-serif;
+    margin: 0.5vw auto 0.5vw auto;
     width: 75%;
-    padding: 2vw;
-    font-size: 2vw;
+    padding: 5vw;
+    font-size: 1.4vw;
+    background-color: #1e008a;
+    border-radius: 10%;
 }
 
 .pageLink{
-    font-size: 2vw;
+    font-family: 'Quantico', sans-serif;
+    font-size: 3.5vw;
     text-align: center;
+    display: block;
+    width: 50%;
+    margin: 3vw auto 14vw auto;
+}
+ul{
+    padding-left: 2.5vw;
+    padding-right: 2.5vw;
 }
 
 .mainBullets{
-    padding-bottom: 35px;
+    padding-bottom: 3vw;
+}
+
+.subBullets{
+    padding-bottom: 1.5vw;
 }
 
 .indent{
-    padding-left: 40px;
+    padding-left: 6vw;
 }
 
 .circlePackTitle{
@@ -114,7 +138,18 @@ body{
     padding: 2vw;
 }
 
+.BLM{
+    width: 80%;
+    margin: 0.5vw auto 8vw auto;
+    /*background-color: black;*/
+    /*border-radius: 10%;*/
+}
 
+.socMoveDesc{
+    display: block;
+    width: 80%;
+    margin: 1.5vw auto 4vw auto;
+}
 
 
 
