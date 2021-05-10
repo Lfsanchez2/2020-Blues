@@ -29,7 +29,9 @@ body{
     margin: 1.5vw auto 1.5vw auto;
 }
 
-
+.datasource a{
+    color: #5fbcde;
+}
 
 .bannerSections{
     font-family: 'Quantico', sans-serif;
@@ -141,8 +143,6 @@ ul{
 .BLM{
     width: 80%;
     margin: 0.5vw auto 8vw auto;
-    /*background-color: black;*/
-    /*border-radius: 10%;*/
 }
 
 .socMoveDesc{

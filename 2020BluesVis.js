@@ -531,19 +531,7 @@ Promise.all([
         .style("font-size", "20px")
         .attr("y", graphHeight/2)
         .attr("transform", "translate("+(-265)+", "+graphHeight/2+")rotate(-90)")
-        .text("Album Sales (Thousands - Million)")
-
-    streamsGroup.append("g")
-        .style("font-family","'Changa', sans-serif")
-        .style("font-size", "20px")
-        .call(d3.axisBottom(xScale))
-        .attr("transform", "translate(0,"+graphHeight+")");
-    streamsGroup.append("g")
-        .style("font-family","'Changa', sans-serif")
-        .style("font-size", "20px")
-        .call(d3.axisLeft(yScale5).ticks(7).tickFormat(function (d){
-            return (d3.format(".3s")(d)).replace("G", "B");
-        }));
+        .text("Album Sales (Thousands - Millions)")
     let audioX = audioGroup.append("g")
         .style("font-family","'Changa', sans-serif")
         .style("font-size", "20px")
@@ -592,6 +580,33 @@ Promise.all([
             return d3.format(".3s")(d).replace("G", "B");
         }));
     videoY.append("text")
+        .attr("fill", "white")
+        .attr("text-anchor", "middle")
+        .style("font-family","'Changa', sans-serif")
+        .style("font-size", "20px")
+        .attr("y", graphHeight/2)
+        .attr("transform", "translate("+(-265)+", "+graphHeight/2+")rotate(-90)")
+        .text("Stream Count")
+    let totalStreamX = streamsGroup.append("g")
+        .style("font-family","'Changa', sans-serif")
+        .style("font-size", "20px")
+        .call(d3.axisBottom(xScale))
+        .attr("transform", "translate(0,"+graphHeight+")");
+    totalStreamX.append("text")
+        .attr("fill", "white")
+        .attr("text-anchor", "middle")
+        .style("font-family","'Changa', sans-serif")
+        .style("font-size", "20px")
+        .attr("y", 55)
+        .attr("x",graphWidth/2)
+        .text("Song Rank")
+    let totalStreamY = streamsGroup.append("g")
+        .style("font-family","'Changa', sans-serif")
+        .style("font-size", "20px")
+        .call(d3.axisLeft(yScale4).ticks(5).tickFormat(function (d){
+            return d3.format(".3s")(d).replace("G", "B");
+        }));
+    totalStreamY.append("text")
         .attr("fill", "white")
         .attr("text-anchor", "middle")
         .style("font-family","'Changa', sans-serif")
@@ -958,7 +973,7 @@ d3.select("body")
     .append("div")
     .attr("class", "datasource")
     .html("2020 Data Sourced from:&nbsp;&nbsp;<a href ='https://www.musicbusinessworldwide.com/files/2021/01/MRC_Billboard_YEAR_END_2020_US-Final.pdf' target = '_blank'>Page 53 of MRC Data's 2020 Billboard Year-End Review</a>"+
-        "<br>2019 Data Sourced from:&nbsp;&nbsp;<a href='https://static.billboard.com/files/pdfs/NIELSEN_2019_YEARENDreportUS.pdf' target = '_blank'>Pages 35 of Nielsen's 2019 Billboard Year-End Review</a>")
+        "<br>2019 Data Sourced from:&nbsp;&nbsp;<a href='https://static.billboard.com/files/pdfs/NIELSEN_2019_YEARENDreportUS.pdf' target = '_blank'>Page 35 of Nielsen's 2019 Billboard Year-End Review</a>")
 
 
 d3.select("body")
