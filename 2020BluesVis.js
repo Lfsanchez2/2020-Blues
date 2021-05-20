@@ -19,159 +19,116 @@ let barDiv1 = d3.select("body")
     .style("justify-content", "space-evenly")
     .style("margin", "0.5vw auto 3vw auto")
     .style("border-radius", "10%")
-    .style("background-color","#1e008a")
-    .style("overflow", "auto");
+    .style("background-color","#1e008a");
 
+/*
+    These are the 6 divs that will hold the SVG's for the 6 'general statistics' bar charts that track changes of the
+    Top 10 Album Sales and Top 10 Songs Streams between 2019 and 2020
+ */
 barDiv1.append("div")
     .attr("id", "physicalalbums")
-    .style("width", "31%")
-    .style("border-radius", "10%")
-    .style("background-color", "#0f1247")
+    .attr("class", "generalBarCharts")
     .style("margin", "2.5vw auto 0.5vw 2.5vw");
 barDiv1.append("div")
     .attr("id", "digitalalbums")
-    .style("width", "31%")
-    .style("border-radius", "10%")
-    .style("background-color", "#0f1247")
+    .attr("class", "generalBarCharts")
     .style("margin", "2.5vw auto 0.5vw auto");
 barDiv1.append("div")
     .attr("id", "totalsales")
-    .style("width", "31%")
-    .style("border-radius", "10%")
-    .style("background-color", "#0f1247")
+    .attr("class", "generalBarCharts")
     .style("margin", "2.5vw 2.5vw 0.5vw auto");
 barDiv1.append("div")
     .attr("id", "videostreams")
-    .style("width", "31%")
-    .style("border-radius", "10%")
-    .style("background-color", "#0f1247")
+    .attr("class", "generalBarCharts")
     .style("margin", "0.5vw auto 2.5vw 2.5vw");
 barDiv1.append("div")
     .attr("id", "audiostreams")
-    .style("width", "31%")
-    .style("border-radius", "10%")
-    .style("background-color", "#0f1247")
+    .attr("class", "generalBarCharts")
     .style("margin", "0.5vw auto 2.5vw auto");
 barDiv1.append("div")
     .attr("id", "streams")
-    .style("width", "31%")
-    .style("border-radius", "10%")
-    .style("background-color", "#0f1247")
+    .attr("class", "generalBarCharts")
     .style("margin", "0.5vw 2.5vw 2.5vw auto");
 
+/*
+    Each Bar Chart SVG is inside a responsive view box that will resize along with the page.
+    Reference for responsiveness:
+    https://medium.com/@louisemoxy/a-simple-way-to-make-d3-js-charts-svgs-responsive-7afb04bc2e4b
+ */
 let albumsSVG = d3.select("#physicalalbums")
     .append("svg")
     .attr("preserveAspectRatio", "xMinYMin meet")
     .attr("viewBox", "0,0,700,500")
-    .style("stroke-width", "2px")
-    .style("display", "block")
-    .style("margin", "1vw");
-
+    .attr("class", "generalBarChartsSVG");
 let albumsSVG2 = d3.select("#digitalalbums")
     .append("svg")
     .attr("preserveAspectRatio", "xMinYMin meet")
     .attr("viewBox", "0,0,700,500")
-    .style("stroke-width", "2px")
-    .style("display", "block")
-    .style("margin", "1vw");
-
+    .attr("class", "generalBarChartsSVG");
 let totalSalesSVG = d3.select("#totalsales")
     .append("svg")
     .attr("preserveAspectRatio", "xMinYMin meet")
     .attr("viewBox", "0,0,700,500")
-    .style("stroke-width", "2px")
-    .style("display", "block")
-    .style("margin", "1vw");
-
+    .attr("class", "generalBarChartsSVG");
 let audioSVG = d3.select("#audiostreams")
     .append("svg")
     .attr("preserveAspectRatio", "xMinYMin meet")
     .attr("viewBox", "0,0,700,500")
-    .style("stroke-width", "2px")
-    .style("display", "block")
-    .style("margin", "1vw");
-
+    .attr("class", "generalBarChartsSVG");
 let videoSVG = d3.select("#videostreams")
     .append("svg")
     .attr("preserveAspectRatio", "xMinYMin meet")
     .attr("viewBox", "0,0,700,500")
-    .style("stroke-width", "2px")
-    .style("display", "block")
-    .style("margin", "1vw");
-
+    .attr("class", "generalBarChartsSVG");
 let streamsSVG = d3.select("#streams")
     .append("svg")
     .attr("preserveAspectRatio", "xMinYMin meet")
     .attr("viewBox", "0,0,700,500")
-    .style("stroke-width", "2px")
-    .style("display", "block")
-    .style("margin", "1vw");
+    .attr("class", "generalBarChartsSVG");
 
+/*
+    These are the groups of each SVG that will contain the actual graph
+ */
 let albumGroup = albumsSVG.append("g")
     .attr("transform", "translate(" + (margin.left + 15) + ","
         + margin.top + ")");
-
 let albumGroup2 = albumsSVG2.append("g")
     .attr("transform", "translate(" + (margin.left + 15) + ","
         + margin.top + ")");
-
 let albumGroup3 = totalSalesSVG.append("g")
     .attr("transform", "translate(" + (margin.left + 15) + ","
         + margin.top + ")");
-
 let audioGroup = audioSVG.append("g")
     .attr("transform", "translate(" + (margin.left + 15) + ","
         + margin.top + ")");
-
 let videoGroup = videoSVG.append("g")
     .attr("transform", "translate(" + (margin.left + 15) + ","
         + margin.top + ")");
-
 let streamsGroup = streamsSVG.append("g")
     .attr("transform", "translate(" + (margin.left + 15) + ","
         + margin.top + ")");
 
+/*
+    Color legends for each bar chart, made with d3.legend
+ */
 albumsSVG.append("g")
-    .style("font-family","'Changa', sans-serif")
-    .style("font-size","20px")
     .attr("class", "legendOrdinal")
     .attr("transform", "translate("+(margin.left+30)+","+(margin.top+20)+")")
-    .style("fill", "white");
-
 albumsSVG2.append("g")
-    .style("font-family","'Changa', sans-serif")
-    .style("font-size","20px")
     .attr("class", "legendOrdinal")
     .attr("transform", "translate("+(margin.left+30)+","+(margin.top+20)+")")
-    .style("fill", "white");
-
 totalSalesSVG.append("g")
-    .style("font-family","'Changa', sans-serif")
-    .style("font-size","20px")
     .attr("class", "legendOrdinal")
     .attr("transform", "translate("+(margin.left+30)+","+(margin.top+20)+")")
-    .style("fill", "white");
-
 audioSVG.append("g")
-    .style("font-family","'Changa', sans-serif")
-    .style("font-size","20px")
     .attr("class", "legendOrdinal")
     .attr("transform", "translate("+(margin.left+30)+","+(margin.top+20)+")")
-    .style("fill", "white");
-
 videoSVG.append("g")
-    .style("font-family","'Changa', sans-serif")
-    .style("font-size","20px")
     .attr("class", "legendOrdinal")
     .attr("transform", "translate("+(margin.left+30)+","+(margin.top+20)+")")
-    .style("fill", "white");
-
 streamsSVG.append("g")
-    .style("font-family","'Changa', sans-serif")
-    .style("font-size","20px")
     .attr("class", "legendOrdinal")
     .attr("transform", "translate("+(margin.left+30)+","+(margin.top+20)+")")
-    .style("fill", "white");
 
 let yearScale = d3.scaleOrdinal()
     .domain(["2019", "2020"])
@@ -194,78 +151,58 @@ videoSVG.select(".legendOrdinal")
 streamsSVG.select(".legendOrdinal")
     .call(legend);
 
-
 let graphHeight = height-margin.top-margin.bottom,
     graphWidth = width-margin.right-margin.left;
 
-let xScale = d3.scaleBand().range([0, graphWidth]).padding(0.4);
-let yScale = d3.scaleLinear().range([graphHeight, 0]);
-let yScale2 = d3.scaleLinear().range([graphHeight, 0]);
-let yScale3 = d3.scaleLinear().range([graphHeight, 0]);
-let yScale4 = d3.scaleLinear().range([graphHeight, 0]);
-let yScale5 = d3.scaleLinear().range([graphHeight, 0]);
-let yScaleTotal = d3.scaleLinear().range([graphHeight, 0]);
+/*
+    Defining scales for all the graphs
+ */
 
+let xScale = d3.scaleBand().range([0, graphWidth]).padding(0.4);
+let salesPhysDigiScale = d3.scaleLinear().range([graphHeight, 0]);
+let totalSalesScale = d3.scaleLinear().range([graphHeight, 0]);
+let streamsAudVidScale = d3.scaleLinear().range([graphHeight, 0]);
+let totalStreamScale = d3.scaleLinear().range([graphHeight, 0]);
+
+/*
+    Titles for each graph
+ */
 albumsSVG.append("text")
     .attr("x", margin.left + (graphWidth/2))
     .attr("y", 32)
     .attr("text-anchor", "middle")
-    .attr("fill", "white")
-    .style("font-family","'Quantico', sans-serif")
-    .style("font-size", "22px")
-    .style("text-decoration", "underline")
+    .attr("class", "generalTitles")
     .text("Top 10 Albums - Physical Sales");
-
 albumsSVG2.append("text")
     .attr("x", margin.left + (graphWidth/2))
     .attr("y", 32)
     .attr("text-anchor", "middle")
-    .attr("fill", "white")
-    .style("font-family","'Quantico', sans-serif")
-    .style("font-size", "22px")
-    .style("text-decoration", "underline")
+    .attr("class", "generalTitles")
     .text("Top 10 Albums - Digital Sales");
-
 totalSalesSVG.append("text")
     .attr("x", margin.left + (graphWidth/2))
     .attr("y", 32)
     .attr("text-anchor", "middle")
-    .attr("fill", "white")
-    .style("font-family","'Quantico', sans-serif")
-    .style("font-size", "22px")
-    .style("text-decoration", "underline")
+    .attr("class", "generalTitles")
     .text("Top 10 Albums - Total Sales");
-
 audioSVG.append("text")
     .attr("x", margin.left + (graphWidth/2))
     .attr("y", 32)
     .attr("text-anchor", "middle")
-    .attr("fill", "white")
-    .style("font-family","'Quantico', sans-serif")
-    .style("font-size", "22px")
-    .style("text-decoration", "underline")
+    .attr("class", "generalTitles")
     .text("Top 10 Songs - On-Demand Audio Streams");
-
 videoSVG.append("text")
     .attr("x", margin.left + (graphWidth/2))
     .attr("y", 32)
     .attr("text-anchor", "middle")
-    .attr("fill", "white")
-    .style("font-family","'Quantico', sans-serif")
-    .style("font-size", "22px")
-    .style("text-decoration", "underline")
+    .attr("class", "generalTitles")
     .text("Top 10 Songs - On-Demand Video Streams");
-
 streamsSVG.append("text")
     .attr("x", margin.left + (graphWidth/2))
     .attr("y", 32)
     .attr("text-anchor", "middle")
-    .attr("fill", "white")
-    .style("font-family","'Quantico', sans-serif")
-    .style("font-size", "22px")
-    .style("text-decoration", "underline")
+    .attr("class", "generalTitles")
     .text("Top 10 Songs - On-Demand Streams (Audio + Video)");
-
 streamsSVG.append("text")
     .attr("x", margin.left + (graphWidth/2))
     .attr("y", 58)
@@ -274,7 +211,6 @@ streamsSVG.append("text")
     .style("font-size", "16px")
     .style("font-family","'Changa', sans-serif")
     .text("*Stream Counts Are in the hundred millions to billions");
-
 audioSVG.append("text")
     .attr("x", margin.left + (graphWidth/2))
     .attr("y", 58)
@@ -283,7 +219,6 @@ audioSVG.append("text")
     .style("font-size", "16px")
     .style("font-family","'Changa', sans-serif")
     .text("*Stream Counts Are in the hundred millions to billions");
-
 videoSVG.append("text")
     .attr("x", margin.left + (graphWidth/2))
     .attr("y", 58)
@@ -306,16 +241,17 @@ let TotalSales2020 = [];
 let streams2019 = [];
 let streams2020 = [];
 
-function drawBars(group, color, offset, givenScale){
-    group.append("rect")
-        .attr("width", (xScale.bandwidth()/2)-2)
-        .attr("y", function (d){ return givenScale(d.value) })
-        .attr("x", function (d){ return xScale(d.rank) +
-            (((xScale.bandwidth()/2)+2)*offset)})
-        .attr("height", function (d){ return graphHeight - givenScale(d.value) })
-        .attr("fill", color)
-}
-
+/*
+    Loop will read from all 6 sales/streams csv files at once and compile each entry
+    into an object with a
+    Type - Which chart the object represents
+    Title - The song or album name
+    Artist - The artist's name
+    Value - The album sales / streaming count
+    Rank - The album/song's position in the top 10
+    These objects are added to separate arrays for each chart that represent the top
+    10 of 2019 and 2020 for each chart
+ */
 Promise.all([
     d3.csv("phys_album_sales.csv"),
     d3.csv("digital_album_sales.csv"),
@@ -326,37 +262,43 @@ Promise.all([
 ]).then(function(files){
     for (let i = 0; i < files[0].length; i++) {
         let physAlbumObj = {
-            song: files[0][i]["title"],
+            type: "Physical Album Sales",
+            title: files[0][i]["title"],
             artist: files[0][i]["artist"],
             value: +files[0][i]["sales"],
             rank: "#" + ((i % 10) + 1)
         }
         let digiAlbumObj = {
-            song: files[1][i]["title"],
+            type: "Digital Album Sales",
+            title: files[1][i]["title"],
             artist: files[1][i]["artist"],
             value: +files[1][i]["sales"],
             rank: "#" + ((i % 10) + 1)
         }
         let audioStreamObj = {
-            song: files[2][i]["title"],
+            type: "On-Demand Audio Streams",
+            title: files[2][i]["title"],
             artist: files[2][i]["artist"],
             value: +files[2][i]["streams"],
             rank: "#" + ((i % 10) + 1)
         }
         let videoStreamObj = {
-            song: files[3][i]["title"],
+            type: "On-Demand Video Streams",
+            title: files[3][i]["title"],
             artist: files[3][i]["artist"],
             value: +files[3][i]["streams"],
             rank: "#" + ((i % 10) + 1)
         }
         let streamObj = {
-            song: files[4][i]["title"],
+            type: "Total On-Demand Streams",
+            title: files[4][i]["title"],
             artist: files[4][i]["artist"],
             value: +files[4][i]["streams"],
             rank: "#" + ((i % 10) + 1)
         }
         let totalSalesObj = {
-            song: files[5][i]["title"],
+            type: "Total Album Sales",
+            title: files[5][i]["title"],
             artist: files[5][i]["artist"],
             value: +files[5][i]["sales"],
             rank: "#" + ((i % 10) + 1)
@@ -377,246 +319,179 @@ Promise.all([
             TotalSales2020.push(totalSalesObj);
         }
     }
+
+    /*
+        Define scales for each chart
+     */
     xScale.domain(["#10", "#9",  "#8", "#7", "#6", "#5", "#4", "#3", "#2", "#1"]);
-    yScale.domain([0, 800000]);
-    yScale2.domain([0, 800000]);
-    yScale3.domain([0, 1500000000])
-    yScale4.domain([0, 1500000000])
-    yScale5.domain([0, 2500000000]);
-    yScaleTotal.domain([0, 1300000]);
-    let Phys2019Bars = albumGroup.append("g")
-        .selectAll("g")
-        .data(PhysAlbumSales2019)
-        .enter();
-    drawBars(Phys2019Bars, "#ff5e00", 0, yScale);
-    let Phys2020Bars = albumGroup.append("g")
-        .selectAll("g")
-        .data(PhysAlbumSales2020)
-        .enter();
-    drawBars(Phys2020Bars, "#0059de", 1, yScale);
+    salesPhysDigiScale.domain([0, 800000])
+    totalSalesScale.domain([0, 1300000])
+    streamsAudVidScale.domain([0, 1500000000])
+    totalStreamScale.domain([0, 2500000000])
 
-    let Digi2019Bars = albumGroup2.append("g")
-        .selectAll("g")
-        .data(DigiAlbumSales2019)
-        .enter();
-    drawBars(Digi2019Bars, "#ff5e00", 0, yScale2);
-    let Digi2020Bars = albumGroup2.append("g")
-        .selectAll("g")
-        .data(DigiAlbumSales2020)
-        .enter();
-    drawBars(Digi2020Bars, "#0059de", 1, yScale2);
+    /*
+        Chart groups, scales, and data sets are put into an array so that chart
+        bars, axes, and labels can be created in a loop
+     */
+    let chartList = [{svgChoice: albumGroup, scaleChoice: salesPhysDigiScale, dataset1: PhysAlbumSales2019, dataset2: PhysAlbumSales2020},
+                     {svgChoice: albumGroup2, scaleChoice: salesPhysDigiScale, dataset1: DigiAlbumSales2019, dataset2: DigiAlbumSales2020},
+                     {svgChoice: albumGroup3, scaleChoice: totalSalesScale, dataset1: TotalSales2019, dataset2: TotalSales2020},
+                     {svgChoice: audioGroup, scaleChoice: streamsAudVidScale, dataset1: AudioStreams2019, dataset2: AudioStreams2020},
+                     {svgChoice: videoGroup, scaleChoice: streamsAudVidScale, dataset1: VideoStreams2019, dataset2: VideoStreams2020},
+                     {svgChoice: streamsGroup, scaleChoice: totalStreamScale, dataset1: streams2019, dataset2: streams2020},
+    ]
 
-    let total2019Bars = albumGroup3.append("g")
-        .selectAll("g")
-        .data(TotalSales2019)
-        .enter();
-    drawBars(total2019Bars, "#ff5e00", 0, yScaleTotal);
-    let total2020Bars = albumGroup3.append("g")
-        .selectAll("g")
-        .data(TotalSales2020)
-        .enter();
-    drawBars(total2020Bars, "#0059de", 1, yScaleTotal);
-
-    let streams2019Bars = streamsGroup.append("g")
-        .selectAll("g")
-        .data(streams2019)
-        .enter();
-    drawBars(streams2019Bars, "#ff5e00", 0, yScale5);
-    let streams2020Bars = streamsGroup.append("g")
-        .selectAll("g")
-        .data(streams2020)
-        .enter();
-    drawBars(streams2020Bars, "#0059de", 1, yScale5);
-
-    let audio2019Bars = audioGroup.append("g")
-        .selectAll("g")
-        .data(AudioStreams2019)
-        .enter();
-    drawBars(audio2019Bars, "#ff5e00", 0, yScale3);
-    let audio2020Bars = audioGroup.append("g")
-        .selectAll("g")
-        .data(AudioStreams2020)
-        .enter();
-    drawBars(audio2020Bars, "#0059de", 1, yScale3);
-
-    let video2019Bars = videoGroup.append("g")
-        .selectAll("g")
-        .data(VideoStreams2019)
-        .enter();
-    drawBars(video2019Bars, "#ff5e00", 0, yScale4);
-    let video2020Bars = videoGroup.append("g")
-        .selectAll("g")
-        .data(VideoStreams2020)
-        .enter();
-    drawBars(video2020Bars, "#0059de", 1, yScale4);
-
-    let physX = albumGroup.append("g")
-        .style("font-family","'Changa', sans-serif")
-        .style("font-size", "20px")
-        .call(d3.axisBottom(xScale))
-        .attr("transform", "translate(0,"+graphHeight+")");
-    physX.append("text")
-        .style("font-family","'Changa', sans-serif")
-        .attr("fill", "white")
-        .attr("text-anchor", "middle")
-        .style("font-size", "20px")
-        .attr("y", 55)
-        .attr("x",graphWidth/2)
-        .text("Album Rank")
-    let physY = albumGroup.append("g")
-        .style("font-family","'Changa', sans-serif")
-        .style("font-size", "20px")
-        .call(d3.axisLeft(yScale).ticks(5).tickFormat(function (d){
-            return d3.format(".3s")(d);
-        }));
-    physY.append("text")
-        .style("font-family","'Changa', sans-serif")
-        .attr("fill", "white")
-        .attr("text-anchor", "middle")
-        .style("font-size", "20px")
-        .attr("y", graphHeight/2)
-        .attr("transform", "translate("+(-265)+", "+graphHeight/2+")rotate(-90)")
-        .text("Album Sales (Thousands)")
-    let digiX = albumGroup2.append("g")
-        .style("font-size", "20px")
-        .style("font-family","'Changa', sans-serif")
-        .call(d3.axisBottom(xScale))
-        .attr("transform", "translate(0,"+graphHeight+")");
-    digiX.append("text")
-        .attr("fill", "white")
-        .attr("text-anchor", "middle")
-        .style("font-family","'Changa', sans-serif")
-        .style("font-size", "20px")
-        .attr("y", 55)
-        .attr("x",graphWidth/2)
-        .text("Album Rank")
-    let digiY = albumGroup2.append("g")
-        .style("font-family","'Changa', sans-serif")
-        .style("font-size", "20px")
-        .call(d3.axisLeft(yScale2).ticks(5).tickFormat(function (d){
-            return d3.format(".3s")(d);
-        }));
-    digiY.append("text")
-        .attr("fill", "white")
-        .attr("text-anchor", "middle")
-        .style("font-family","'Changa', sans-serif")
-        .style("font-size", "20px")
-        .attr("y", graphHeight/2)
-        .attr("transform", "translate("+(-265)+", "+graphHeight/2+")rotate(-90)")
-        .text("Album Sales (Thousands)")
-
-    let totalX = albumGroup3.append("g")
-        .style("font-family","'Changa', sans-serif")
-        .style("font-size", "20px")
-        .call(d3.axisBottom(xScale))
-        .attr("transform", "translate(0,"+graphHeight+")");
-    totalX.append("text")
-        .style("font-family","'Changa', sans-serif")
-        .attr("fill", "white")
-        .attr("text-anchor", "middle")
-        .style("font-size", "20px")
-        .attr("y", 55)
-        .attr("x",graphWidth/2)
-        .text("Album Rank")
-    let totalY = albumGroup3.append("g")
-        .style("font-family","'Changa', sans-serif")
-        .style("font-size", "20px")
-        .call(d3.axisLeft(yScaleTotal).ticks(5).tickFormat(function (d){
-            return d3.format(".3s")(d);
-        }));
-    totalY.append("text")
-        .attr("fill", "white")
-        .attr("text-anchor", "middle")
-        .style("font-family","'Changa', sans-serif")
-        .style("font-size", "20px")
-        .attr("y", graphHeight/2)
-        .attr("transform", "translate("+(-265)+", "+graphHeight/2+")rotate(-90)")
-        .text("Album Sales (Thousands - Millions)")
-    let audioX = audioGroup.append("g")
-        .style("font-family","'Changa', sans-serif")
-        .style("font-size", "20px")
-        .call(d3.axisBottom(xScale))
-        .attr("transform", "translate(0,"+graphHeight+")");
-    audioX.append("text")
-        .attr("fill", "white")
-        .attr("text-anchor", "middle")
-        .style("font-family","'Changa', sans-serif")
-        .style("font-size", "20px")
-        .attr("y", 55)
-        .attr("x",graphWidth/2)
-        .text("Song Rank")
-    let audioY = audioGroup.append("g")
-        .style("font-family","'Changa', sans-serif")
-        .style("font-size", "20px")
-        .call(d3.axisLeft(yScale3).ticks(5).tickFormat(function (d){
-            return d3.format(".3s")(d).replace("G", "B");
-        }));
-    audioY.append("text")
-        .attr("fill", "white")
-        .attr("text-anchor", "middle")
-        .style("font-family","'Changa', sans-serif")
-        .style("font-size", "20px")
-        .attr("y", graphHeight/2)
-        .attr("transform", "translate("+(-265)+", "+graphHeight/2+")rotate(-90)")
-        .text("Stream Count")
-
-    let videoX = videoGroup.append("g")
-        .style("font-family","'Changa', sans-serif")
-        .style("font-size", "20px")
-        .call(d3.axisBottom(xScale))
-        .attr("transform", "translate(0,"+graphHeight+")");
-    videoX.append("text")
-        .attr("fill", "white")
-        .attr("text-anchor", "middle")
-        .style("font-family","'Changa', sans-serif")
-        .style("font-size", "20px")
-        .attr("y", 55)
-        .attr("x",graphWidth/2)
-        .text("Song Rank")
-    let videoY = videoGroup.append("g")
-        .style("font-family","'Changa', sans-serif")
-        .style("font-size", "20px")
-        .call(d3.axisLeft(yScale4).ticks(5).tickFormat(function (d){
-            return d3.format(".3s")(d).replace("G", "B");
-        }));
-    videoY.append("text")
-        .attr("fill", "white")
-        .attr("text-anchor", "middle")
-        .style("font-family","'Changa', sans-serif")
-        .style("font-size", "20px")
-        .attr("y", graphHeight/2)
-        .attr("transform", "translate("+(-265)+", "+graphHeight/2+")rotate(-90)")
-        .text("Stream Count")
-    let totalStreamX = streamsGroup.append("g")
-        .style("font-family","'Changa', sans-serif")
-        .style("font-size", "20px")
-        .call(d3.axisBottom(xScale))
-        .attr("transform", "translate(0,"+graphHeight+")");
-    totalStreamX.append("text")
-        .attr("fill", "white")
-        .attr("text-anchor", "middle")
-        .style("font-family","'Changa', sans-serif")
-        .style("font-size", "20px")
-        .attr("y", 55)
-        .attr("x",graphWidth/2)
-        .text("Song Rank")
-    let totalStreamY = streamsGroup.append("g")
-        .style("font-family","'Changa', sans-serif")
-        .style("font-size", "20px")
-        .call(d3.axisLeft(yScale4).ticks(5).tickFormat(function (d){
-            return d3.format(".3s")(d).replace("G", "B");
-        }));
-    totalStreamY.append("text")
-        .attr("fill", "white")
-        .attr("text-anchor", "middle")
-        .style("font-family","'Changa', sans-serif")
-        .style("font-size", "20px")
-        .attr("y", graphHeight/2)
-        .attr("transform", "translate("+(-265)+", "+graphHeight/2+")rotate(-90)")
-        .text("Stream Count")
+    /*
+        This function creates a tooltip when hovering over a bar.  Tooltip will be
+        displayed at the top of each chart.  Hovering over 2019 or 2020 bar for a
+        particular rank will display the data for both of the bars in that rank.
+        Data will be displayed in this format:
+        Artist -
+        Song/Album Title -
+        Sales/Streams -
+     */
+    function createTooltip(title, rank, index){
+        let type;
+        let type2;
+        if(title.includes("Album")) {
+            type = "Album"
+            type2 = "Sales"
+        }
+        else {
+            type = "Song"
+            type2 = "Streams"
+        }
+        let id = rank.replace('#', 'p')
+        let format = d3.format(",")
+        let data2019 = chartList[index].svgChoice.selectAll("#"+id)._groups[0][0].__data__;
+        let display2019Value = format(data2019.value)
+        let data2020 = chartList[index].svgChoice.selectAll("#"+id)._groups[0][1].__data__;
+        let display2020Value = format(data2020.value)
+        let text;
+        if(type === "Album")
+            text = "<div style='width: 90%; text-align: center; margin: 0 auto 1.6vw auto;text-decoration: underline'>"+title+" "+rank+" Spot</div>"
+        else
+            text = "<div style='width: 90%; text-align: center; margin: 0 auto 1.6vw auto;font-size: 1.2vw;text-decoration: underline'>"+title+" "+rank+" Spot</div>"
+        text += "<div style='width: 46%;height: 10vw;margin: 0.6vw auto 0.3vw auto'>";
+        if(type === "Album")
+            text += "<div style='text-align: center;margin: 0 auto 0.6vw auto;text-decoration: underline'>" + "2019 "+rank+"</div>"
+        else
+            text += "<div style='text-align: center;margin: 0 auto 0.6vw auto;text-decoration: underline;font-size: 1.2vw'>" + "2019 "+rank+"</div>"
+        text += "<div style='width: 90%;margin: auto;font-size: 0.8vw;'>"+
+            "Artist: "+data2019.artist+"<br>"+
+            type+": "+data2019.title+"<br>"+
+            type2+": "+display2019Value+"<br>"+
+            "</div>"
+        text+="</div>"
+        text += "<div style='width: 46%;height: 10vw;margin: 0.6vw auto 0.3vw auto'>";
+        if(type === "Album")
+            text += "<div style='text-align: center;margin: 0 auto 0.6vw auto;text-decoration: underline'>" + "2020 "+rank+"</div>"
+        else
+            text += "<div style='text-align: center;margin: 0 auto 0.6vw auto;text-decoration: underline;font-size: 1.2vw'>" + "2020 "+rank+"</div>"
+        text += "<div style='width: 90%;margin: auto;font-size: 0.8vw;'>"+
+            "Artist: "+data2020.artist+"<br>"+
+            type+": "+data2020.title+"<br>"+
+            type2+": "+display2020Value+"<br>"+
+            "</div>"
+        text+="</div>"
+        let tipDiv;
+        if (title === "Physical Album Sales")
+            tipDiv = barDiv1.select("#physicalalbums")
+        else if (title === "Digital Album Sales")
+            tipDiv = barDiv1.select("#digitalalbums")
+        else if (title === "Total Album Sales")
+            tipDiv = barDiv1.select("#totalsales")
+        else if (title === "On-Demand Audio Streams")
+            tipDiv = barDiv1.select("#audiostreams")
+        else if (title === "On-Demand Video Streams")
+            tipDiv = barDiv1.select("#videostreams")
+        else
+            tipDiv = barDiv1.select("#streams")
+        tipDiv.append("div")
+            .attr("id", "generalTooltip")
+            .attr("class", "generalTooltip")
+            .html(text)
+    }
+    /*
+        This for loop creates the bars for all of the charts, the axes, and the labels
+        for the axes.  Tooltip creation will also be handled on mouseover of each bar,
+        and they will be removed when the mouse moves out of a bar.
+     */
+    for(let i = 0; i < 6; i++) {
+        chartList[i].svgChoice.append("g")
+            .selectAll("g")
+            .data(chartList[i].dataset1)
+            .enter()
+            .append("rect")
+            .attr("id", function (d) { return d.rank.replace('#','p') })
+            .attr("width", (xScale.bandwidth()/2)-2)
+            .attr("y", function (d){ return chartList[i].scaleChoice(d.value) })
+            .attr("x", function (d){ return xScale(d.rank) })
+            .attr("height", function (d){ return graphHeight - chartList[i].scaleChoice(d.value) })
+            .attr("fill", "#ff5e00")
+            .on("mouseover", function (e, d){
+                createTooltip(d.type, d.rank, i)
+            })
+            .on("mouseout", function (){
+                let tooltipDiv = d3.select("#generalTooltip")
+                tooltipDiv.remove()
+            });
+        chartList[i].svgChoice.append("g")
+            .selectAll("g")
+            .data(chartList[i].dataset2)
+            .enter()
+            .append("rect")
+            .attr("id", function (d) { return d.rank.replace('#','p') })
+            .attr("width", (xScale.bandwidth()/2)-2)
+            .attr("y", function (d){ return chartList[i].scaleChoice(d.value) })
+            .attr("x", function (d){ return xScale(d.rank) + (((xScale.bandwidth()/2)+2))})
+            .attr("height", function (d){ return graphHeight - chartList[i].scaleChoice(d.value) })
+            .attr("fill", "#0059de")
+            .on("mouseover", function (e, d){
+                createTooltip(d.type, d.rank, i)
+            })
+            .on("mouseout", function (){
+                let tooltipDiv = d3.select("#generalTooltip")
+                tooltipDiv.remove()
+            });
+        let xAxis = chartList[i].svgChoice.append("g")
+            .attr("class", "generalAxis")
+            .call(d3.axisBottom(xScale))
+            .attr("transform", "translate(0," + graphHeight + ")")
+        let xText = xAxis.append("text")
+            .attr("class", "generalAxis")
+            .attr("fill", "white")
+            .attr("y", 55)
+            .attr("x", graphWidth / 2)
+            .attr("text-anchor", "middle")
+        let yAxis = chartList[i].svgChoice.append("g")
+            .attr("class", "generalAxis")
+            .call(d3.axisLeft(chartList[i].scaleChoice).ticks(5).tickFormat(function (d) {
+                return d3.format(".3s")(d).replace("G", "B");
+            }));
+        let yText = yAxis.append("text")
+            .attr("class", "generalAxis")
+            .attr("fill", "white")
+            .attr("y", graphHeight / 2)
+            .attr("transform", "translate(" + (-265) + ", " + graphHeight / 2 + ")rotate(-90)")
+            .attr("text-anchor", "middle")
+        if (i === 0 || i === 1 || i === 2) {
+            xText.text("Album Rank")
+            yText.text("Album Sales")
+        } else {
+            xText.text("Song Rank")
+            yText.text("Stream Count")
+        }
+    }
 })
 
 const width2 = 300, height2 = 250
+/*
+    This function creates a Diverging Scale bar chart given an svg group and a dataset
+    The color scale for these graphs is from d3's built in interpolation options, specifically
+    interpolateRdBu
+ */
+
 function makeDivergingChart(group, dataset){
     let graphWidth2 = width2 - 60;
     let graphHeight2 = height2 - 80;
@@ -762,51 +637,30 @@ d3.select("body")
 
 let divergeDiv = d3.select("body")
     .append("div")
-    .style("width", "90%")
-    .style("display", "flex")
-    .style("flex-wrap", "wrap")
-    .style("align-items", "center")
-    .style("justify-items", "center")
-    .style("justify-content", "space-evenly")
-    .style("border-radius", "10%")
-    .style("background-color","#1e008a")
-    .style("margin", "2vw auto 2vw auto")
+    .attr("class", "divergeBarCharts")
 let physDiverge = divergeDiv.append("div")
-    .style("display", "block")
-    .style("width", "31%")
-    .style("border-radius", "10%")
-    .style("background-color", "#0f1247")
+    .attr("class", "divergeBarChartsSVG")
     .style("margin", "3vw 0.3vw 0.6vw auto")
 let digiDiverge = divergeDiv.append("div")
-    .style("display", "block")
-    .style("width", "31%")
-    .style("border-radius", "10%")
-    .style("background-color", "#0f1247")
+    .attr("class", "divergeBarChartsSVG")
     .style("margin", "3vw 0.3vw 0.6vw 0.3vw")
 let totalDiverge = divergeDiv.append("div")
-    .style("display", "block")
-    .style("width", "31%")
-    .style("border-radius", "10%")
-    .style("background-color", "#0f1247")
+    .attr("class", "divergeBarChartsSVG")
     .style("margin", "3vw auto 0.6vw 0.3vw")
 let vinylDiverge = divergeDiv.append("div")
-    .style("display", "block")
-    .style("width", "31%")
-    .style("border-radius", "10%")
-    .style("background-color", "#0f1247")
+    .attr("class", "divergeBarChartsSVG")
     .style("margin", "0.6vw 0.3vw 3vw auto")
 let digitalSongDiverge = divergeDiv.append("div")
-    .style("display", "block")
-    .style("width", "31%")
-    .style("border-radius", "10%")
-    .style("background-color", "#0f1247")
+    .attr("class", "divergeBarChartsSVG")
     .style("margin", "0.6vw 0.3vw 3vw 0.3vw")
 let audioStreamDiverge = divergeDiv.append("div")
-    .style("display", "block")
-    .style("width", "31%")
-    .style("border-radius", "10%")
-    .style("background-color", "#0f1247")
+    .attr("class", "divergeBarChartsSVG")
     .style("margin", "0.6vw auto 3vw 0.3vw")
+/*
+    Each Diverging Bar Chart SVG is inside a responsive view box that will resize along with the page.
+    Reference for responsiveness:
+    https://medium.com/@louisemoxy/a-simple-way-to-make-d3-js-charts-svgs-responsive-7afb04bc2e4b
+ */
 let physDSVG = physDiverge.append("svg")
     .style("display", "block")
     .style("margin", "2vw")
@@ -837,6 +691,9 @@ let audioDSVG = audioStreamDiverge.append("svg")
     .style("margin", "2vw")
     .attr("preserveAspectRatio", "xMinYMin meet")
     .attr("viewBox", "0,0,300,300");
+/*
+    Each Diverging Bar Chart has the same scale so they are all easily comparable
+ */
 let divergeScale = d3.scaleDiverging()
     .interpolator(d3.interpolateRdBu)
     .domain([52, 0, -52])
@@ -856,50 +713,43 @@ physDSVG.append("text")
     .attr("x", 150)
     .attr("y", 15)
     .attr("text-anchor", "middle")
-    .attr("fill", "white")
-    .attr("font-size", "12px")
-    .style("font-family", "'Quantico', sans-serif")
+    .attr("class", "divergeTitle")
     .text("Percent Change In Physical Album Sales")
 digiDSVG.append("text")
     .attr("x", 150)
     .attr("y", 15)
     .attr("text-anchor", "middle")
-    .attr("fill", "white")
-    .attr("font-size", "12px")
-    .style("font-family", "'Quantico', sans-serif")
+    .attr("class", "divergeTitle")
     .text("Percent Change In Digital Album Sales")
 totalDSVG.append("text")
     .attr("x", 150)
     .attr("y", 15)
     .attr("text-anchor", "middle")
-    .attr("fill", "white")
-    .attr("font-size", "12px")
-    .style("font-family", "'Quantico', sans-serif")
+    .attr("class", "divergeTitle")
     .text("Percent Change In Total Album Sales")
 vinylDSVG.append("text")
     .attr("x", 150)
     .attr("y", 15)
     .attr("text-anchor", "middle")
-    .attr("fill", "white")
-    .attr("font-size", "12px")
-    .style("font-family", "'Quantico', sans-serif")
+    .attr("class", "divergeTitle")
     .text("Percent Change In Vinyl LP Sales")
 digiSongDSVG.append("text")
     .attr("x", 150)
     .attr("y", 15)
     .attr("text-anchor", "middle")
-    .attr("fill", "white")
-    .attr("font-size", "12px")
-    .style("font-family", "'Quantico', sans-serif")
+    .attr("class", "divergeTitle")
     .text("Percent Change In Digital Song Sales")
 audioDSVG.append("text")
     .attr("x", 150)
     .attr("y", 15)
     .attr("text-anchor", "middle")
-    .attr("fill", "white")
-    .attr("font-size", "12px")
-    .style("font-family", "'Quantico', sans-serif")
+    .attr("class", "divergeTitle")
     .text("Percent Change In Audio Streaming")
+
+/*
+    All the Diverging Bar Charts are placed in the given group and get their data
+    from the given dataset
+ */
 makeDivergingChart(physDGroup, USPhysAlbumSales)
 makeDivergingChart(digiDGroup, USDigiAlbumSales)
 makeDivergingChart(totalDGroup, totalUSAlbumSales)
@@ -907,39 +757,21 @@ makeDivergingChart(vinylDGroup, vinylAlbumSales)
 makeDivergingChart(digiSongDGroup, digitalSongSales)
 makeDivergingChart(audioDGroup, totalUSAudioStreams)
 physDSVG.append("g")
-    .attr("fill", "white")
-    .style("font-size", "10px")
-    .style("font-family", "'Changa', sans-serif")
     .attr("class", "legendDiverge")
     .attr("transform", "translate(22,28)");
 digiDSVG.append("g")
-    .attr("fill", "white")
-    .style("font-size", "10px")
-    .style("font-family", "'Changa', sans-serif")
     .attr("class", "legendDiverge")
     .attr("transform", "translate(22,28)");
 totalDSVG.append("g")
-    .attr("fill", "white")
-    .style("font-size", "10px")
-    .style("font-family", "'Changa', sans-serif")
     .attr("class", "legendDiverge")
     .attr("transform", "translate(22,28)");
 vinylDSVG.append("g")
-    .attr("fill", "white")
-    .style("font-size", "10px")
-    .style("font-family", "'Changa', sans-serif")
     .attr("class", "legendDiverge")
     .attr("transform", "translate(22,28)");
 digiSongDSVG.append("g")
-    .attr("fill", "white")
-    .style("font-size", "10px")
-    .style("font-family", "'Changa', sans-serif")
     .attr("class", "legendDiverge")
     .attr("transform", "translate(22,28)");
 audioDSVG.append("g")
-    .attr("fill", "white")
-    .style("font-size", "10px")
-    .style("font-family", "'Changa', sans-serif")
     .attr("class", "legendDiverge")
     .attr("transform", "translate(22,28)");
 let divergeLegend = d3.legendColor()
@@ -964,8 +796,6 @@ d3.select("body")
     .attr("class", "bannerSections otherSection")
     .html("SHARE OF TOTAL VOLUME BY FORMAT & TOP 10 GENRE <br> FROM 2019 AND 2020")
 
-// Reference for responsiveness:
-// https://medium.com/@louisemoxy/a-simple-way-to-make-d3-js-charts-svgs-responsive-7afb04bc2e4b
 
 // Reference for Force Cluster Graph
 // https://bl.ocks.org/d3indepth/9d9f03a0016bc9df0f13b0d52978c02f
@@ -1186,7 +1016,7 @@ function makeForces (svg, dataset, group, other, offset) {
             svg.selectAll("#genreTitle").remove();
         })
 
-    graph.nodes(dataset).on("tick", function (d){
+    graph.nodes(dataset).on("tick", function (){
         allNodes.attr('cx', function(d) {
             return d.x
         })
@@ -1690,7 +1520,6 @@ function drawBubbles(obj, index, xPos){
         .attr("text-anchor", "middle")
         .attr("fill", "white")
         .attr("x", xPos)
-        // .attr("y", 175+(obj[index].first/5000)+35)
         .attr("y", 320+(Math.sqrt(obj[index].first / Math.PI)/4)+35)
         .style("font-family","'Changa', sans-serif")
         .style("font-size", "18px")
@@ -1730,9 +1559,7 @@ d3.csv("soc_movement_growth.csv").then(function(data){
         drawBubbles(bubbleObjects, i, circleXPos[i])
     }
 
-    let annotationArray = []
     for(let i = 0; i < 5; i++) {
-        console.log(circleXPos[i])
         let annotations = [{
             note: {
                 label: ((d3.format(".1f"))(((bubbleObjects[i].second-bubbleObjects[i].first)
@@ -1758,12 +1585,8 @@ d3.csv("soc_movement_growth.csv").then(function(data){
             dy: -45,
             dx: 10,
         }]
-
         const makeAnnotations = d3.annotation()
             .annotations(annotations)
-
-        annotationArray.push(makeAnnotations);
-
         bubbleSvg.append("g")
             .attr("id", "bubbleannotation")
             .style("fill", "white")
@@ -1801,6 +1624,117 @@ d3.csv("soc_movement_growth.csv").then(function(data){
         })
 })
 
+function styleIFrame(i){
+    i.allowFullscreen = false;
+    i.frameBorder = 0;
+    i.width = "80%";
+    i.height = "52%";
+    i.style.display = "block";
+    i.style.margin = "1.2vw auto 0vw auto";
+    i.style.padding = "0.3vw";
+}
+
+let descriptions = [
+    "This Is America, by Childish Gambino, was released on May 5th, 2018.  Upon its release, it saw " +
+    "nationwide attention, as the music video covered heavy topics of racism and the black struggle in the U.S. " +
+    "The video is full of symbolism, from Gambino imitating minstrel/sambo imagery to Gambino commiting acts of " +
+    "gun violence that represent the U.S.' severe incidence of such cases.  In 2019, This Is America won 4 grammies for: " +
+    "Best Music Video, Record of the Year, Song of the Year, and Best Melodic Rap Performance.<br><br>" +
+    "<div style='margin: auto;text-align: center'>" +
+    "Lyrics and analysis can be found <a style='text-align: center' href='https://genius.com/Childish-gambino-this-is-america-lyrics' target='_blank'>here</a>" +
+    "</div>",
+    "Middle Child, by J. Cole, was released on January 23rd, 2019.  Now officially J. Cole's highest-charting song, Middle " +
+    "Child is the only song on this list that doesn't have a theme of racial injustice or struggle.  Instead, J. Cole raps about " +
+    "a different kind of struggle, his place as the 'middle child' of old and new generations of hip hop and how he often gets " +
+    "overlooked in the industry.<br><br>" +
+    "<div style='margin: auto;text-align: center'>" +
+    "Lyrics and analysis can be found <a href='https://genius.com/J-cole-middle-child-lyrics' target='_blank'>here</a>" +
+    "</div>",
+    "Alright, by Kendrick Lamar, was released on June 30th, 2015 - the second oldest song on the list.  Since its release, Alright has" +
+    " been used as a protest song, one of the more recent examples being the Washington D.C. BLM protests on  " +
+    "<a href='https://twitter.com/JoshuaPotash/status/1269394317640171525?s=20' target='_blank'>June 6th 2020</a>.  The song's message" +
+    " perfectly embodies the feelings of struggle and perseverance experienced by black people in modern America.  Lamar recounts these" +
+    " instances of black strife throughout the song, but he continues to echo the sentiment that \"we gon\' be alright\" despite them, an uplifting" +
+    " message that grew to become an anthem for those fighting for change." +
+    " Alright would go on to win two Grammies for Best Rap Performance and Best Rap Song, an MTV Video Music Award for Best Direction, two BET" +
+    " Hip Hop awards for Best Impact Track and Best Hip Hop Video, and a Soul Train Music Award for Rhythm & Bars.<br><br>" +
+    "<div style='margin: auto;text-align: center'>" +
+    "Lyrics and analysis can be found <a href='https://genius.com/Kendrick-lamar-alright-lyrics' target='_blank'>here</a>" +
+    "</div>",
+    "a lot, by 21 Savage feat. J.Cole, was released on December 20th, 2018.  a lot is similar to J.Cole's previous entry on this list - Middle Child " +
+    "- as it is based on personal struggles as opposed to broader terms of black struggle in the U.S. a lot is arguably the most fitting " +
+    "entry on the album which it debuted (\'I Am > I Was\') as it describes just how far 21 Savage has come despite his tumultuous life full of hardships." +
+    " The recollection of violence, infidelity, and loss in 21 Savage's life is only elevated by its powerful music video. J.Cole chimes in on the track" +
+    " by paying his respects to 21 Savage before rapping about the deceptive nature of the music industry, the justice system, and the media in his definitive" +
+    " style and prowess." +
+    "<div style='margin: auto;text-align: center'>" +
+    "Lyrics and analysis can be found <a href='https://genius.com/21-savage-a-lot-lyrics' target='_blank'>here</a>" +
+    "</div>",
+    "Fuck tha Police, by N.W.A., was released on August 9th, 1988.  It is the oldest song on the list, and quite possibly the most famous and influential" +
+    ". The impact this song has had is indesputable, as it is one of the most famous protests songs to this date.  The meaning of the song is clear enough" +
+    " from the title alone. In it, Ice Cube, MC Ren, and Eazy-E are testifying in a mock trial against the LAPD.  They all proceed to criticize police actiobs" +
+    " and police brutality. Since its release, Fuck Tha Police has remained a controversial song, but it's because of its controversial meaning  that it has" +
+    " garnered so much recognition and impact over 30 years after its release."+
+    "<div style='margin: auto;text-align: center'>" +
+    "Lyrics and analysis can be found <a href='https://genius.com/Nwa-fuck-tha-police-lyrics' target='_blank'>here</a>" +
+    "</div>",
+
+]
+
+let songBlocks = []
+let links = ["https://www.youtube.com/embed/VYOjWnS4cMY", "https://www.youtube.com/embed/WILNIXZr2oc",
+             "https://www.youtube.com/embed/Z-48u_uWMHY", "https://www.youtube.com/embed/DmWWqogr_r8",
+             "https://www.youtube.com/embed/ADdpLv3RDhA"]
+let titles = ["This Is America", "Middle Child", "Alright", "a lot", "Fuck Tha Police"]
+
+let descriptionDiv = d3.select("body")
+    .append("div")
+    .style("width", "90%")
+    .style("background-color", "#010314")
+    .style("margin", "0.5vw auto 1.5vw auto")
+    .style("display", "flex")
+    .style("flex-wrap", "wrap")
+    .style("justify-content", "space-evenly")
+    .style("align-items", "center")
+    .style("justify-items", "center")
+    .style("border-radius", "10%")
+    .style("overflow", "hidden")
+
+descriptionDiv.append("div")
+    .style("width", "100%")
+    .style("background-color","#0e1261")
+    .style("padding", "2vw")
+    .style("margin", "0 -2vw")
+    .style("margin-bottom", "1.5vw")
+    .style("font-size", "3.2vw")
+    .style("font-family", "Quantico, sans-serif")
+    .style("border-bottom", "1vw double #060929")
+    .style("text-align", "center")
+    .html("Song Descriptions and Information")
+
+for(let i = 0; i < 5; i++){
+    let block = descriptionDiv.append("div")
+        .attr("id", "songBlock"+(i+1))
+    if(i === 0 || i === 2)
+        block.attr("class", "songBlock leftEdge")
+    else if(i === 1 || i ===3)
+        block.attr("class", "songBlock rightEdge")
+    else
+        block.attr("class", "songBlock lastBlock")
+    songBlocks.push(block)
+    block.append("div")
+        .attr("class", "songTitle")
+        .html(titles[i])
+    let currIFrame = document.createElement("iframe")
+    styleIFrame(currIFrame)
+    currIFrame.src = links[i]
+    document.getElementById("songBlock"+(i+1)).appendChild(currIFrame)
+    block.append("div")
+        .attr("id", "songDesc"+(i+1))
+        .attr("class", "songDesc")
+        .html(descriptions[i])
+}
+
 d3.select("body")
     .append("div")
     .attr("id", "socMovBlock")
@@ -1813,7 +1747,7 @@ d3.select("#socMovBlock")
     .append("text")
     .attr("class", "socMoveDesc")
     .html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The transition from the week of May 22nd, 2020 - May 27th, 2020 to May 28th, 2020 - June 6th, 2020 is important "+
-    "because this time range is shortly after the death of George Floyd (May 25th, 2020).  This event is arguably one of the most " +
+        "because this time range is shortly after the death of George Floyd (May 25th, 2020).  This event is arguably one of the most " +
         "impactful and defining of 2020, as it led to widespread protests throughout the nation.  These songs in particular are very " +
         "topical when considering the impact of this event, and it is no surprise that most of them saw booming growth following it.<br><br>" +
         "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;It is worth noting that <em>none</em> of these songs were released in 2020, so being a new release is not a factor in their rise in " +

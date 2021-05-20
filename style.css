@@ -29,7 +29,7 @@ body{
     margin: 1.5vw auto 1.5vw auto;
 }
 
-.datasource a{
+a{
     color: #5fbcde;
 }
 
@@ -43,7 +43,7 @@ body{
     padding: 2vw;
     width: 100%;
     margin: 0 -2vw;
-    text-shadow: 0vw 0.25vw 0.3vw black;
+    text-shadow: 0 0.25vw 0.3vw black;
 }
 
 .otherSection{
@@ -98,10 +98,92 @@ ul{
     padding-left: 6vw;
 }
 
+.generalBarCharts{
+    width: 31%;
+    border-radius: 10%;
+    background-color: #0f1247;
+    position: relative;
+}
+
+.generalBarChartsSVG{
+    stroke-width: 2px;
+    display: block;
+    margin: 1vw;
+}
+
+.generalTooltip{
+    width: 21.7vw;
+    display: flex;
+    justify-content: space-evenly;
+    justify-items: center;
+    align-items: center;
+    flex-wrap: wrap;
+    position: absolute;
+    top: -36%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 2vw;
+    font-size: 1.5vw;
+    color: white;
+    font-family: 'Changa', sans-serif;
+    background-color: #1e008a;
+    border: 0.8vw solid #0f1247;
+    z-index: 10;
+    border-radius: 10%;
+}
+
+.legendOrdinal{
+    font-family: 'Changa', sans-serif;
+    font-size: 20px;
+    fill: white;
+}
+
+.generalTitles{
+    font-family: 'Quantico', sans-serif;
+    font-size: 22px;
+    fill: white;
+    text-decoration: underline;
+}
+
+.generalAxis{
+    font-family: 'Changa', sans-serif;
+    font-size: 20px;
+}
+
+.divergeBarCharts{
+    width: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-items: center;
+    justify-content: space-evenly;
+    border-radius: 10%;
+    background-color: #1e008a;
+    margin: 2vw auto 2vw auto;
+}
+
+.divergeBarChartsSVG{
+    width: 31%;
+    border-radius: 10%;
+    background-color: #0f1247;
+}
+
+.divergeTitle{
+    font-family: 'Quantico', sans-serif;
+    font-size: 12px;
+    fill: white;
+}
+
+.legendDiverge{
+    font-family: 'Changa', sans-serif;
+    font-size: 10px;
+    fill: white;
+}
+
 .circlePackTitle{
     width: 100%;
     padding: 2vw;
-    margin: 0vw -2vw;
+    margin: 0 -2vw;
     background-color: #1e008a;
     border-bottom: 1vw double #0f1247;
     color: white;
@@ -151,6 +233,59 @@ ul{
     margin: 1.5vw auto 4vw auto;
 }
 
+.songBlock{
+    position: relative;
+    width: 42%;
+    height: 9vw;
+    margin: 1vw auto 1vw auto;
+    font-family: 'Changa', sans-serif;
+    color: white;
+    font-size: 1.2vw;
+    overflow: hidden;
+    border: 0.8vw #0e1261 double;
+    background-color: black;
+    transition-timing-function: ease;
+    transition-delay: 1s;
+    transition: height 1s, overflow-y 0.5s;
+}
 
+.songBlock:hover{
+    height: 30vw;
+    overflow-y: scroll;
+}
 
+.songTitle{
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5vw;
+    padding: 2vw;
+    margin: 0 -2vw;
+    text-align: center;
+    font-family: 'Quantico', sans-serif;
+    font-size: 2.8vw;
+    border-bottom: 0.6vw #0e1261 double;
+    background: rgb(0,0,0);
+    background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(15,18,71,1) 24%, rgba(31,36,139,1) 50%, rgba(15,18,71,1) 76%, rgba(0,0,0,1) 100%);
+}
+
+.songDesc{
+    width: 75%;
+    padding: 1.5vw;
+    color: white;
+    font-family: 'Changa', sans-serif;
+    margin: 0.6vw auto 1.5vw auto;
+}
+
+.leftEdge{
+    margin: 0.6vw 1vw 0.6vw auto;
+}
+
+.rightEdge{
+    margin: 0.6vw auto 0.6vw 1vw;
+}
+
+.lastBlock{
+    margin-bottom: 4vw;
+}
 
