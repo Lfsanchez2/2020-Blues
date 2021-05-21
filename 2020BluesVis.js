@@ -709,6 +709,10 @@ let digiSongDGroup = digiSongDSVG.append("g")
     .attr("transform", "translate(48, 90)")
 let audioDGroup = audioDSVG.append("g")
     .attr("transform", "translate(48, 90)")
+
+/*
+    Diverging Bar Chart titles
+ */
 physDSVG.append("text")
     .attr("x", 150)
     .attr("y", 15)
@@ -756,6 +760,10 @@ makeDivergingChart(totalDGroup, totalUSAlbumSales)
 makeDivergingChart(vinylDGroup, vinylAlbumSales)
 makeDivergingChart(digiSongDGroup, digitalSongSales)
 makeDivergingChart(audioDGroup, totalUSAudioStreams)
+
+/*
+    Groups that will contain the diverging scale legend for all the charts
+ */
 physDSVG.append("g")
     .attr("class", "legendDiverge")
     .attr("transform", "translate(22,28)");
@@ -799,6 +807,7 @@ d3.select("body")
 
 // Reference for Force Cluster Graph
 // https://bl.ocks.org/d3indepth/9d9f03a0016bc9df0f13b0d52978c02f
+// Used for the 7 Circle Packing Charts in the Shares by Format and Genre Visualization
 d3.select("body")
     .append("div")
     .attr("class", "datasource")
@@ -818,6 +827,13 @@ d3.select("body")
     .style("justify-content", "space-evenly")
     .style("display", "flex")
     .style("flex-wrap", "wrap")
+
+/*
+    Each SVG for the Circle Pack Charts will be placed inside a 'pill' div each pill div has a width
+    of ~30% so three can fit in a row the circlepacks div defined above.
+    Instead of having the title on the SVG, the title has been appended as a div inside the pill div
+    itself, before the SVG is inserted after it.
+ */
 
 d3.select("#circlepacks")
     .append("div")
@@ -895,6 +911,11 @@ let volumeObjects2019 = [[],[],[],[],[],[],[]]
 let volumeObjects2020 = [[],[],[],[],[],[],[]]
 let annotation2019;
 let annotation2020;
+/*
+    This function defines the force and center of all the Circle Packs.  They will all cluster together
+    and collide with one another so there are no overlaps between circles.
+    Reference here: https://bl.ocks.org/d3indepth/9d9f03a0016bc9df0f13b0d52978c02f
+ */
 function makeForces (svg, dataset, group, other, offset) {
     let graph = d3.forceSimulation(dataset)
         .force("charge", d3.forceManyBody(dataset).strength(8))
@@ -1026,6 +1047,11 @@ function makeForces (svg, dataset, group, other, offset) {
     })
 }
 
+/*
+    Data is parsed from the CSV and separated to fill object arrays based on the current index
+    of the loop.  These objects define the data that will be preserved within each circle in the
+    Circle Pack Charts.
+ */
 d3.csv("total_volume_share.csv").then(function (data2){
     for(let i = 0; i < data2.length; i++){
         let arrayToAdd;
@@ -1123,6 +1149,12 @@ d3.csv("total_volume_share.csv").then(function (data2){
     let audioStreamsGroup2 = audioStreamsSVG.append("g")
     let videoStreamsGroup1 = videoStreamsSVG.append("g")
     let videoStreamsGroup2 = videoStreamsSVG.append("g")
+    /*
+        Circle Packs are made by passing an SVG, a dataset and the two groups that will make up the SVG.
+        The offset is meant to be an identifier of where to place the group (far right or far left).
+        The two groups have to be sent in because the tooltips are simultaneous across both groups and are
+        added and removed from both groups based on mouseover/mouseout of either or.
+     */
     makeForces(volumeSVG, volumeObjects2020[0], bubbleGroup, bubbleGroup2, 420)
     makeForces(volumeSVG, volumeObjects2019[0], bubbleGroup2, bubbleGroup,180)
     makeForces(physSVG, volumeObjects2020[1], physGroup1, physGroup2, 420)
@@ -1241,6 +1273,13 @@ let rectangle4 = raceGroup.append("rect")
     .attr("width", 0)
     .attr("height", raceYScale.bandwidth())
 
+/*
+    This is a simple animation function that starts a transition for the horizontal bar charts of the
+    livestreaming Bar Chart Race.  The width of the bars will be transitioned up to the total percent
+    increase of consumption for each participant.
+    Animated text is also added that annotates all the bars at the end of the race with the total percent
+    increase in consumption.
+ */
 function animateRace(){
     rectangle1.transition()
         .delay(500)
@@ -1355,6 +1394,9 @@ let colorLegend = d3.legendColor()
 raceSVG.select(".legendColor")
     .call(colorLegend);
 let raceClicked = false;
+/*
+    This is the button that commences the Bar Chart Race animation
+ */
 let raceButton = raceDiv.append("button")
     .text("Click to Run Bart Chart Race")
     .style("font-family","'Changa', sans-serif")
@@ -1634,6 +1676,10 @@ function styleIFrame(i){
     i.style.padding = "0.3vw";
 }
 
+/*
+    To automate description divs in a loop, descriptions, titles, and links have been placed in arrays that can
+    be accessed in the loop to fill out the descriptions.
+ */
 let descriptions = [
     "This Is America, by Childish Gambino, was released on May 5th, 2018.  Upon its release, it saw " +
     "nationwide attention, as the music video covered heavy topics of racism and the black struggle in the U.S. " +
