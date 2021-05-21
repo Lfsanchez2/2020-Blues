@@ -1677,8 +1677,7 @@ let descriptions = [
     " garnered so much recognition and impact over 30 years since its release."+
     "<div style='margin: auto;text-align: center'>" +
     "Lyrics and analysis can be found <a href='https://genius.com/Nwa-fuck-tha-police-lyrics' target='_blank'>here</a>" +
-    "</div>",
-
+    "</div>"
 ]
 
 let songBlocks = []
