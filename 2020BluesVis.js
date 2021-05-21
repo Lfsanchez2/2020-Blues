@@ -1672,9 +1672,9 @@ let descriptions = [
     "</div>",
     "Fuck tha Police, by N.W.A., was released on August 9th, 1988.  It is the oldest song on the list, and quite possibly the most famous and influential" +
     ". The impact this song has had is indesputable, as it is one of the most famous protests songs to this date.  The meaning of the song is clear enough" +
-    " from the title alone. In it, Ice Cube, MC Ren, and Eazy-E are testifying in a mock trial against the LAPD.  They all proceed to criticize police actiobs" +
+    " from the title alone. In it, Ice Cube, MC Ren, and Eazy-E are testifying in a mock trial against the LAPD.  They all proceed to criticize police actions" +
     " and police brutality. Since its release, Fuck Tha Police has remained a controversial song, but it's because of its controversial meaning  that it has" +
-    " garnered so much recognition and impact over 30 years after its release."+
+    " garnered so much recognition and impact over 30 years since its release."+
     "<div style='margin: auto;text-align: center'>" +
     "Lyrics and analysis can be found <a href='https://genius.com/Nwa-fuck-tha-police-lyrics' target='_blank'>here</a>" +
     "</div>",
